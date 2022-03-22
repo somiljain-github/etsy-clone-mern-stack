@@ -7,6 +7,7 @@ Backend server
 Inside the backend directory run npm install to install the dependencies.
 Create a config directory and add a default.json with the appropriate config params.
 Execute npm start to start the Node.js server.
+
 Frontend server
 
 Inside the frontend directory run npm install to install the dependencies.
