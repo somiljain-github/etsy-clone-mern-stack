@@ -5,6 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 //================================importing routes================================
 const testAPI = require("./routes/test_route");
+const registerRoute = require("./routes/registerRoute");
 //================================start of config================================
 dotenv.config();
 
@@ -64,6 +65,7 @@ mongoose.connection.on("disconnected", () => {
     mongoose.connection.readyState
   );
 });
-//================================sample api================================
-app.use("/", testAPI);
-//================================actual api================================
+//================================sample api to test the server================================
+app.use("/api/v1/", testAPI);
+//================================actual apis================================
+app.use("/api/v1/register", registerRoute);
