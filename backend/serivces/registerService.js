@@ -6,7 +6,6 @@ module.exports = class RegisterService {
     const query = { emailID };
     try {
       const result = await UserModel.findOne(query);
-      console.log("The result is ", result);
       return result == null ? true : false;
     } catch (error) {
       console.log(`Could not fetch the user in user service ${error}`);
@@ -21,7 +20,8 @@ module.exports = class RegisterService {
         password,
       };
       const user = new UserModel(query);
-      const result = await user.save();
+      let savedUser;
+      let result = await user.save().then((user) => (savedUser = user));
       console.log("the result is ", result);
       return result ? result : {};
     } catch (error) {

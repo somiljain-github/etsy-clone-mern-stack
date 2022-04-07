@@ -34,12 +34,11 @@ app.listen(PORT, () => {
 });
 
 //================================connecting to mongoDB================================
-mongoose.connect(
-  `mongodb+srv://${USERNAME}:${PASSWORD}@${CLUSTER}.mongodb.net/${DBNAME}?retryWrites=true&w=majority`,
-  {
-    useNewUrlParser: true,
-  }
-);
+const mongoURI = `mongodb+srv://${USERNAME}:${PASSWORD}@${DBNAME}.lumj7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const mongoURI2 = `mongodb+srv://${USERNAME}:${PASSWORD}@${CLUSTER}.mongodb.net/${DBNAME}?retryWrites=true&w=majority`;
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+});
 
 mongoose.connection.on("connecting", () => {
   console.log(
@@ -65,6 +64,7 @@ mongoose.connection.on("disconnected", () => {
     mongoose.connection.readyState
   );
 });
+
 //================================sample api to test the server================================
 app.use("/api/v1/", testAPI);
 //================================actual apis================================
