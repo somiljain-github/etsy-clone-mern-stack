@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 //================================importing routes================================
 const testAPI = require("./routes/test_route");
 const registerRoute = require("./routes/registerRoute");
+const loginRoute = require("./routes/loginRoute");
 //================================start of config================================
 dotenv.config();
 
@@ -69,3 +70,4 @@ mongoose.connection.on("disconnected", () => {
 app.use("/api/v1/", testAPI);
 //================================actual apis================================
 app.use("/api/v1/register", registerRoute);
+app.use("/api/v1/login", loginRoute);

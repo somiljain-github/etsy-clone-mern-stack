@@ -3,7 +3,7 @@ const encrypt = require("../serivces/encrypt");
 const jwt = require("jsonwebtoken");
 
 module.exports = class RegisterController {
-  static async insertUser(req, res, next) {
+  static async insertUser(req, res) {
     const data = {
       name: req.body.name,
       emailID: req.body.email,
