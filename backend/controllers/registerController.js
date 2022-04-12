@@ -6,7 +6,7 @@ module.exports = class RegisterController {
   static async insertUser(req, res) {
     const data = {
       name: req.body.name,
-      emailID: req.body.email,
+      emailID: req.body.emailID,
       password: req.body.password,
     };
     const returnMessage = {
@@ -46,9 +46,9 @@ module.exports = class RegisterController {
           });
           data.token = token;
           returnMessage.user = data;
-          res.status(200).send({
+          res.status(201).send({
             ...returnMessage,
-            status: 200,
+            status: 201,
             isUserUnique: true,
             insertSuccessful: true,
             user: userInserted,

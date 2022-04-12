@@ -2,7 +2,7 @@ const LoginService = require("../serivces/loginService");
 const encrypt = require("../serivces/encrypt");
 const jwt = require("jsonwebtoken");
 
-module.exports = class LoginController {
+module.exports = class HomeController {
   static async loginUser(req, res) {
     const data = {
       emailID: req.body.emailID,
@@ -46,8 +46,6 @@ module.exports = class LoginController {
             returnMessage.message = "Invalid credentials";
             return res.status(400).send(returnMessage);
           } else {
-            //the user is a JSON object which contains _id, emailID, name, password, userDefinedCategories, cart, favourites, etc.
-            //the password will be deleted and this user object will be embedded in the jwt.
             const user = JSON.parse(JSON.stringify(userObj.user));
             delete user.password;
             const token = jwt.sign(user, process.env.SECRET_KEY, {

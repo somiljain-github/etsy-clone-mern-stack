@@ -9,7 +9,7 @@ let itemSchema = new Schema({
   description: { type: String },
   quantity: { type: Number },
   salesCount: { type: Number },
-  shopName: { type: Object, ref: "user", field: "shopName" },
+  // shopName: { type: Object, ref: "user", field: "shopName" },
   userID: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
 });
 const itemModel = mongoose.model("item", itemSchema);
