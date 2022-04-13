@@ -28,4 +28,10 @@ router.get(
   UserController.getFavourites
 );
 
+router.put(
+  "/addFav/:userID",
+  passport.authenticate("jwt", { session: false }),
+  UserController.addFavourites
+);
+
 module.exports = router;

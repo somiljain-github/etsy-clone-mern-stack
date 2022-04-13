@@ -80,7 +80,6 @@ module.exports = class UserController {
     const response = { favouritesFound: false };
     try {
       const result = await UserService.getFavourites(userParamsObj);
-      console.log("the result is", result);
       if (result) {
         response.favouritesFound = result.favouritesFound;
         response.favourites = result.favourites;
@@ -89,6 +88,32 @@ module.exports = class UserController {
         return resp.status(200).send(response);
       } else {
         response.favouritesFound = result.favouritesFound;
+        response.success = false;
+        response.status = "404";
+        return resp.status(404).send(response);
+      }
+    } catch (e) {
+      console.log(e);
+      response.success = false;
+      response.error = "Some error occurred. Please try again later";
+      response.status = "500";
+      resp.status(500).send(response);
+    }
+  }
+
+  static async addFavourites(req, resp) {
+    const userParamsObj = { userID: req.params.userID };
+    userParamsObj.itemID = req.body.itemID;
+    const response = {};
+    try {
+      const result = await UserService.addFavourites(userParamsObj);
+      if (result) {
+        response._id = result._id;
+        response.favourites = result.favourites;
+        response.success = true;
+        response.status = "200";
+        return resp.status(200).send(response);
+      } else {
         response.success = false;
         response.status = "404";
         return resp.status(404).send(response);

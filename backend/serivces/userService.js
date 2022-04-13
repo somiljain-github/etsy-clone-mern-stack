@@ -100,4 +100,27 @@ module.exports = class UserService {
       );
     }
   }
+
+  static async addFavourites({ userID, itemID }) {
+    try {
+      const filterCondition = { _id: userID };
+      const updateCondition = { favourites: itemID };
+      const result = await UserModel.findOneAndUpdate(
+        filterCondition,
+        { $addToSet: updateCondition },
+        { new: true }
+      ).select("favourites");
+      console.log("the result is", result);
+      if (result) {
+        return result;
+      } else {
+        return {};
+      }
+    } catch (err) {
+      console.log(err);
+      throw new Error(
+        "Some unexpected error occurred while updating user in userService.updateUser"
+      );
+    }
+  }
 };
