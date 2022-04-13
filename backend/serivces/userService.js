@@ -24,7 +24,7 @@ module.exports = class UserService {
     const query = { userID };
     const itemObj = {};
     try {
-      const result = await ItemModel.findOne(query);
+      const result = await ItemModel.findById(query);
 
       if (result) {
         itemObj.itemFound = true;
@@ -34,7 +34,7 @@ module.exports = class UserService {
       }
       return itemObj;
     } catch (error) {
-      console.log(`Could not fetch the user in userService service ${error}`);
+      console.log(`Could not fetch the item in userService getItems ${error}`);
     }
   }
 
@@ -56,6 +56,47 @@ module.exports = class UserService {
       console.log(err);
       throw new Error(
         "Some unexpected error occurred while updating user in userService.updateUser"
+      );
+    }
+  }
+
+  static async updateCurrency({ userID, currencyID }) {
+    try {
+      const filterCondition = { _id: userID };
+      const updateCondition = { currencyID };
+      const result = await UserModel.findOneAndUpdate(
+        filterCondition,
+        updateCondition,
+        { new: true }
+      );
+      if (result) {
+        return result;
+      } else {
+        return {};
+      }
+    } catch (err) {
+      console.log(err);
+      throw new Error(
+        "Some unexpected error occurred while updating user in userService.updateUser"
+      );
+    }
+  }
+
+  static async getFavourites({ userID }) {
+    const query = { _id: userID };
+    const itemObj = {};
+    try {
+      const result = await UserModel.findById(query).select("favourites");
+      if (result) {
+        itemObj.favouritesFound = true;
+        itemObj.favourites = result.favourites;
+      } else {
+        itemObj.itemFound = false;
+      }
+      return itemObj;
+    } catch (error) {
+      console.log(
+        `Could not fetch the user in userService getFavourites ${error}`
       );
     }
   }

@@ -10,4 +10,22 @@ router.get(
   UserController.getUserDetails
 );
 
+router.put(
+  "/:userID",
+  passport.authenticate("jwt", { session: false }),
+  UserController.updateUserDetails
+);
+
+router.put(
+  "/updatecurrency/:userID",
+  passport.authenticate("jwt", { session: false }),
+  UserController.updateCurrency
+);
+
+router.get(
+  "/getFav/:userID",
+  passport.authenticate("jwt", { session: false }),
+  UserController.getFavourites
+);
+
 module.exports = router;

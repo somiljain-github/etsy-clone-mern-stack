@@ -13,7 +13,7 @@ let userSchema = new Schema({
   address: { type: String },
   about: { type: String },
   phoneNumber: { type: String },
-  currencyID: { type: String },
+  currencyID: { type: String, default: "USD" },
   shopName: { type: String },
   userDefinedCategories: [
     {
