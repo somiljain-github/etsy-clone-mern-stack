@@ -40,4 +40,10 @@ router.put(
   UserController.removeFavourites
 );
 
+router.get(
+  "/cart/:userID",
+  passport.authenticate("jwt", { session: false }),
+  UserController.getCartItems
+);
+
 module.exports = router;

@@ -91,7 +91,7 @@ module.exports = class UserService {
         itemObj.favouritesFound = true;
         itemObj.favourites = result.favourites;
       } else {
-        itemObj.itemFound = false;
+        itemObj.favouritesFound = false;
       }
       return itemObj;
     } catch (error) {
@@ -144,6 +144,25 @@ module.exports = class UserService {
       console.log(err);
       throw new Error(
         "Some unexpected error occurred while updating user in userService.removeFavourites"
+      );
+    }
+  }
+
+  static async getCartItems({ userID }) {
+    const query = { _id: userID };
+    const itemObj = {};
+    try {
+      const result = await UserModel.findById(query).select("cart");
+      if (result) {
+        itemObj.cartFound = true;
+        itemObj.cart = result.cart;
+      } else {
+        itemObj.cartFound = false;
+      }
+      return itemObj;
+    } catch (error) {
+      console.log(
+        `Could not fetch the user in userService getCartItems; and the error is ${error}`
       );
     }
   }
