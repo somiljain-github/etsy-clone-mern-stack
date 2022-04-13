@@ -1,4 +1,4 @@
-const UserService = require("../serivces/UserService");
+const UserService = require("../services/userService");
 
 module.exports = class UserController {
   static async getUserDetails(req, resp) {
@@ -107,6 +107,31 @@ module.exports = class UserController {
     const response = {};
     try {
       const result = await UserService.addFavourites(userParamsObj);
+      if (result) {
+        response._id = result._id;
+        response.favourites = result.favourites;
+        response.success = true;
+        response.status = "200";
+        return resp.status(200).send(response);
+      } else {
+        response.success = false;
+        response.status = "404";
+        return resp.status(404).send(response);
+      }
+    } catch (e) {
+      console.log(e);
+      response.success = false;
+      response.error = "Some error occurred. Please try again later";
+      response.status = "500";
+      resp.status(500).send(response);
+    }
+  }
+  static async removeFavourites(req, resp) {
+    const userParamsObj = { userID: req.params.userID };
+    userParamsObj.itemID = req.body.itemID;
+    const response = {};
+    try {
+      const result = await UserService.removeFavourites(userParamsObj);
       if (result) {
         response._id = result._id;
         response.favourites = result.favourites;

@@ -34,4 +34,10 @@ router.put(
   UserController.addFavourites
 );
 
+router.put(
+  "/removeFav/:userID",
+  passport.authenticate("jwt", { session: false }),
+  UserController.removeFavourites
+);
+
 module.exports = router;

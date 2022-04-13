@@ -1,5 +1,5 @@
-const LoginService = require("../serivces/loginService");
-const encrypt = require("../serivces/encrypt");
+const LoginService = require("../services/loginService");
+const encrypt = require("../services/encrypt");
 const jwt = require("jsonwebtoken");
 
 module.exports = class LoginController {

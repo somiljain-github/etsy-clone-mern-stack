@@ -1,5 +1,5 @@
-const RegisterService = require("../serivces/registerService");
-const encrypt = require("../serivces/encrypt");
+const RegisterService = require("../services/registerService");
+const encrypt = require("../services/encrypt");
 const jwt = require("jsonwebtoken");
 
 module.exports = class RegisterController {
