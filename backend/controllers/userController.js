@@ -2,17 +2,16 @@ const UserService = require("../serivces/UserService");
 
 module.exports = class UserController {
   static async getUserDetails(req, resp) {
-    const userParamsObj = { userID: req.params.id };
+    const userParamsObj = { userID: req.params.userID };
 
     const userObj = await UserService.getUser(userParamsObj);
-    // console.log(userObj);
     if (userObj && !userObj.userFound) {
       console.log(
         "The user with id as",
         userParamsObj.userID,
         "does not exist."
       );
-      res.status(400).send({
+      resp.status(400).send({
         ...returnMessage,
         success: false,
         status: 400,
@@ -32,5 +31,26 @@ module.exports = class UserController {
       }
     }
     resp.status(200).send(userObj);
+  }
+
+  static async updateUserDetails(req, resp) {
+    const userParamsObj = { userID: req.params.userID };
+    userParamsObj.userDetails = req.body;
+    const response = {};
+    try {
+      const result = await UserService.updateUser(userParamsObj);
+      if (result) {
+        response.user = result;
+        response.success = true;
+        response.status = "200";
+        return resp.status(200).send(response);
+      }
+    } catch (e) {
+      console.log(e);
+      response.success = false;
+      response.error = "Some error occurred. Please try again later";
+      response.status = "500";
+      resp.status(500).send(response);
+    }
   }
 };

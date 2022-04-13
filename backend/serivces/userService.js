@@ -37,4 +37,26 @@ module.exports = class UserService {
       console.log(`Could not fetch the user in userService service ${error}`);
     }
   }
+
+  static async updateUser({ userID, userDetails }) {
+    try {
+      const filterCondition = { _id: userID };
+      const updateCondition = userDetails;
+      const result = await UserModel.findOneAndUpdate(
+        filterCondition,
+        updateCondition,
+        { new: true }
+      );
+      if (result) {
+        return result;
+      } else {
+        return {};
+      }
+    } catch (err) {
+      console.log(err);
+      throw new Error(
+        "Some unexpected error occurred while updating user in userService.updateUser"
+      );
+    }
+  }
 };

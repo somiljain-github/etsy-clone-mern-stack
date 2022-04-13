@@ -5,7 +5,7 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
 router.get(
-  "/:id",
+  "/:userID",
   passport.authenticate("jwt", { session: false }),
   UserController.getUserDetails
 );
