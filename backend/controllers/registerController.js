@@ -39,19 +39,21 @@ module.exports = class RegisterController {
           );
           const encryptedPassword = await encrypt.cryptPassword(data.password);
           data.password = encryptedPassword;
-          const userInserted = await RegisterService.createUser(data);
-          delete data.password;
-          const token = jwt.sign(data, process.env.SECRET_KEY, {
+          const userObj = await RegisterService.createUser(data);
+          const user = JSON.parse(JSON.stringify(userObj));
+          delete user.password;
+          console.log(user);
+          const token = jwt.sign(user, process.env.SECRET_KEY, {
             expiresIn: "24h",
           });
-          data.token = token;
-          returnMessage.user = data;
+          returnMessage.token = token;
+          returnMessage.user = user;
           res.status(201).send({
             ...returnMessage,
             status: 201,
             isUserUnique: true,
             insertSuccessful: true,
-            user: userInserted,
+            user: user,
           });
         }
       } catch (error) {
