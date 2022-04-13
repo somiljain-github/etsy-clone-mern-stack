@@ -16,7 +16,7 @@ module.exports = class UserService {
       }
       return userObj;
     } catch (error) {
-      console.log(`Could not fetch the user in userService service ${error}`);
+      console.log(`Could not fetch the user in userService.getUser ${error}`);
     }
   }
 
@@ -77,7 +77,7 @@ module.exports = class UserService {
     } catch (err) {
       console.log(err);
       throw new Error(
-        "Some unexpected error occurred while updating user in userService.updateUser"
+        "Some unexpected error occurred while updating user in userService.updateCurrency"
       );
     }
   }
@@ -110,7 +110,6 @@ module.exports = class UserService {
         { $addToSet: updateCondition },
         { new: true }
       ).select("favourites");
-      console.log("the result is", result);
       if (result) {
         return result;
       } else {
@@ -119,7 +118,7 @@ module.exports = class UserService {
     } catch (err) {
       console.log(err);
       throw new Error(
-        "Some unexpected error occurred while updating user in userService.updateUser"
+        "Some unexpected error occurred while updating user in userService.addFavourites"
       );
     }
   }
@@ -130,7 +129,9 @@ module.exports = class UserService {
       const updateCondition = { favourites: itemID };
       const result = await UserModel.findOneAndUpdate(
         filterCondition,
-        { $addToSet: updateCondition },
+        {
+          $pull: updateCondition,
+        },
         { new: true }
       ).select("favourites");
       console.log("the result is", result);
@@ -142,7 +143,7 @@ module.exports = class UserService {
     } catch (err) {
       console.log(err);
       throw new Error(
-        "Some unexpected error occurred while updating user in userService.updateUser"
+        "Some unexpected error occurred while updating user in userService.removeFavourites"
       );
     }
   }

@@ -22,7 +22,6 @@ module.exports = class RegisterService {
       const user = new UserModel(query);
       let savedUser;
       let result = await user.save().then((user) => (savedUser = user));
-      console.log("the result is ", result);
       return result ? result : {};
     } catch (error) {
       console.log("some error occured in registerService.js");
