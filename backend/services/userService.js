@@ -84,20 +84,19 @@ module.exports = class UserService {
 
   static async getFavourites({ userID }) {
     const query = { _id: userID };
-    const itemObj = {};
+    const itemObj = { favouritesFound: false };
     try {
       const result = await UserModel.findById(query).select("favourites");
       if (result) {
         itemObj.favouritesFound = true;
         itemObj.favourites = result.favourites;
-      } else {
-        itemObj.favouritesFound = false;
       }
       return itemObj;
     } catch (error) {
       console.log(
         `Could not fetch the user in userService getFavourites ${error}`
       );
+      return itemObj;
     }
   }
 
@@ -153,6 +152,7 @@ module.exports = class UserService {
     const itemObj = {};
     try {
       const result = await UserModel.findById(query).select("cart");
+      console.log(result);
       if (result) {
         itemObj.cartFound = true;
         itemObj.cart = result.cart;
@@ -163,6 +163,30 @@ module.exports = class UserService {
     } catch (error) {
       console.log(
         `Could not fetch the user in userService getCartItems; and the error is ${error}`
+      );
+      itemObj.cartFound = false;
+      return itemObj;
+    }
+  }
+
+  static async addCartItems({ userID, itemID }) {
+    try {
+      const filterCondition = { _id: userID };
+      const updateCondition = { cart: itemID };
+      const result = await UserModel.findOneAndUpdate(
+        filterCondition,
+        { $push: updateCondition },
+        { new: true }
+      ).select("cart");
+      if (result) {
+        return result;
+      } else {
+        return {};
+      }
+    } catch (err) {
+      console.log(err);
+      throw new Error(
+        "Some unexpected error occurred while updating user in userService.addCartItems"
       );
     }
   }

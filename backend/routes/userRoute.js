@@ -46,4 +46,10 @@ router.get(
   UserController.getCartItems
 );
 
+router.post(
+  "/cart/:userID",
+  passport.authenticate("jwt", { session: false }),
+  UserController.addCartItems
+);
+
 module.exports = router;

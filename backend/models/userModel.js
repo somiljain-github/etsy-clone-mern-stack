@@ -20,8 +20,8 @@ let userSchema = new Schema({
       type: String,
     },
   ],
-  cart: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
-  favourites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
+  cart: [{ type: mongoose.Schema.Types.ObjectId, ref: "item" }],
+  favourites: [{ type: mongoose.Schema.Types.ObjectId, ref: "item" }],
 });
 const userModel = mongoose.model("user", userSchema);
 module.exports = userModel;

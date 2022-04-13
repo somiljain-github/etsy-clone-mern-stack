@@ -42,7 +42,6 @@ module.exports = class RegisterController {
           const userObj = await RegisterService.createUser(data);
           const user = JSON.parse(JSON.stringify(userObj));
           delete user.password;
-          console.log(user);
           const token = jwt.sign(user, process.env.SECRET_KEY, {
             expiresIn: "24h",
           });
