@@ -50,7 +50,7 @@ module.exports = class UserService {
       if (result) {
         return result;
       } else {
-        return {};
+        return null;
       }
     } catch (err) {
       console.log(err);
@@ -72,7 +72,7 @@ module.exports = class UserService {
       if (result) {
         return result;
       } else {
-        return {};
+        return null;
       }
     } catch (err) {
       console.log(err);
@@ -112,7 +112,7 @@ module.exports = class UserService {
       if (result) {
         return result;
       } else {
-        return {};
+        return null;
       }
     } catch (err) {
       console.log(err);
@@ -137,7 +137,7 @@ module.exports = class UserService {
       if (result) {
         return result;
       } else {
-        return {};
+        return null;
       }
     } catch (err) {
       console.log(err);
@@ -181,12 +181,54 @@ module.exports = class UserService {
       if (result) {
         return result;
       } else {
-        return {};
+        return null;
       }
     } catch (err) {
       console.log(err);
       throw new Error(
         "Some unexpected error occurred while updating user in userService.addCartItems"
+      );
+    }
+  }
+
+  static async removeCartItems({ userID, itemID }) {
+    try {
+      const filterCondition = { _id: userID };
+      const result = await UserModel.findOne(filterCondition).select("cart");
+      if (result) {
+        let cart = result.cart;
+        let idx = cart.findIndex((cartItem) => cartItem == itemID);
+        if (idx != -1) {
+          cart.splice(idx, 1);
+        } else {
+          return null;
+        }
+        const updateCondition = { cart };
+        try {
+          const result = await UserModel.findOneAndUpdate(
+            filterCondition,
+            updateCondition,
+            { new: true }
+          ).select("cart");
+          if (result) {
+            console.log("the final cart is", result.cart);
+            return result;
+          } else {
+            return null;
+          }
+        } catch (error) {
+          console.log(err);
+          throw new Error(
+            "Some unexpected error occurred while updating cart in userService.removeCartItems"
+          );
+        }
+      } else {
+        return null;
+      }
+    } catch (err) {
+      console.log(err);
+      throw new Error(
+        "Some unexpected error occurred while updating cart in userService.removeCartItems"
       );
     }
   }

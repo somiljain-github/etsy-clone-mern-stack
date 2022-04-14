@@ -203,4 +203,29 @@ module.exports = class UserController {
       resp.status(500).send(response);
     }
   }
+
+  static async removeCartItems(req, resp) {
+    const userParamsObj = { userID: req.params.userID };
+    userParamsObj.itemID = req.body.itemID;
+    const response = {};
+    try {
+      const result = await UserService.removeCartItems(userParamsObj);
+      if (result) {
+        response.cart = result.cart;
+        response.success = true;
+        response.status = "200";
+        return resp.status(200).send(response);
+      } else {
+        response.success = false;
+        response.status = "404";
+        return resp.status(404).send(response);
+      }
+    } catch (e) {
+      console.log(e);
+      response.success = false;
+      response.error = "Some error occurred. Please try again later";
+      response.status = "500";
+      resp.status(500).send(response);
+    }
+  }
 };

@@ -52,4 +52,10 @@ router.post(
   UserController.addCartItems
 );
 
+router.post(
+  "/removeFromCart/:userID",
+  passport.authenticate("jwt", { session: false }),
+  UserController.removeCartItems
+);
+
 module.exports = router;
