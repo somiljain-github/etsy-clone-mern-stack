@@ -191,7 +191,7 @@ module.exports = class UserService {
     }
   }
 
-  static async removeCartItems({ userID, itemID }) {
+  static async decrementCartItemQuantity({ userID, itemID }) {
     try {
       const filterCondition = { _id: userID };
       const result = await UserModel.findOne(filterCondition).select("cart");
@@ -219,7 +219,7 @@ module.exports = class UserService {
         } catch (error) {
           console.log(err);
           throw new Error(
-            "Some unexpected error occurred while updating cart in userService.removeCartItems"
+            "Some unexpected error occurred in the inner loop while updating cart in userService.decrementCartItemQuantity"
           );
         }
       } else {
@@ -228,7 +228,32 @@ module.exports = class UserService {
     } catch (err) {
       console.log(err);
       throw new Error(
-        "Some unexpected error occurred while updating cart in userService.removeCartItems"
+        "Some unexpected error occurred while updating cart in userService.decrementCartItemQuantity"
+      );
+    }
+  }
+
+  static async removeCartItems({ userID, itemID }) {
+    try {
+      const filterCondition = { _id: userID };
+      const updateCondition = { cart: itemID };
+      const result = await UserModel.findOneAndUpdate(
+        filterCondition,
+        {
+          $pull: updateCondition,
+        },
+        { new: true }
+      ).select("cart");
+      console.log("the result is", result);
+      if (result) {
+        return result;
+      } else {
+        return null;
+      }
+    } catch (err) {
+      console.log(err);
+      throw new Error(
+        "Some unexpected error occurred while updating user in userService.removeFavourites"
       );
     }
   }

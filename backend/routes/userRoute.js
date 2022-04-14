@@ -58,4 +58,10 @@ router.post(
   UserController.removeCartItems
 );
 
+router.post(
+  "/decrementCartItemQuantity/:userID",
+  passport.authenticate("jwt", { session: false }),
+  UserController.decrementCartItemQuantity
+);
+
 module.exports = router;
