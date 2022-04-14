@@ -64,4 +64,10 @@ router.post(
   UserController.decrementCartItemQuantity
 );
 
+router.get(
+  "/getCategories/:userID",
+  passport.authenticate("jwt", { session: false }),
+  UserController.getCategories
+);
+
 module.exports = router;

@@ -257,4 +257,24 @@ module.exports = class UserService {
       );
     }
   }
+
+  static async getCategories({ userID }) {
+    const query = { _id: userID };
+    const itemObj = { categoriesFound: false };
+    try {
+      const result = await UserModel.findById(query).select(
+        "userDefinedCategories"
+      );
+      if (result) {
+        itemObj.categoriesFound = true;
+        itemObj.userDefinedCategories = result.userDefinedCategories;
+      }
+      return itemObj;
+    } catch (error) {
+      console.log(
+        `Could not fetch the user in userService getCategories and the error is ${error}`
+      );
+      return itemObj;
+    }
+  }
 };
