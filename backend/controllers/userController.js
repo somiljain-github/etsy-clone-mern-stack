@@ -256,7 +256,7 @@ module.exports = class UserController {
 
   static async getCategories(req, resp) {
     const userParamsObj = { userID: req.params.userID };
-    const response = { favouritesFound: false };
+    const response = { categoriesFound: false };
     try {
       const result = await UserService.getCategories(userParamsObj);
       if (result && result.categoriesFound) {
@@ -267,6 +267,32 @@ module.exports = class UserController {
         return resp.status(200).send(response);
       } else {
         response.categoriesFound = result.categoriesFound;
+        response.success = false;
+        response.status = "404";
+        return resp.status(404).send(response);
+      }
+    } catch (e) {
+      console.log(e);
+      response.success = false;
+      response.error = "Some error occurred. Please try again later";
+      response.status = "500";
+      resp.status(500).send(response);
+    }
+  }
+
+  static async addUserDefinedCategories(req, resp) {
+    const userParamsObj = { userID: req.params.userID };
+    userParamsObj.category = req.body.category;
+    const response = {};
+    try {
+      const result = await UserService.addUserDefinedCategories(userParamsObj);
+      if (result) {
+        response._id = result._id;
+        response.userDefinedCategories = result.userDefinedCategories;
+        response.success = true;
+        response.status = "200";
+        return resp.status(200).send(response);
+      } else {
         response.success = false;
         response.status = "404";
         return resp.status(404).send(response);

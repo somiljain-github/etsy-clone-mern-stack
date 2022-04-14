@@ -277,4 +277,28 @@ module.exports = class UserService {
       return itemObj;
     }
   }
+
+  static async addUserDefinedCategories({ userID, category }) {
+    try {
+      const filterCondition = { _id: userID };
+      const updateCondition = { userDefinedCategories: category };
+      console.log(updateCondition);
+      const result = await UserModel.findOneAndUpdate(
+        filterCondition,
+        { $addToSet: updateCondition },
+        { new: true }
+      ).select("userDefinedCategories");
+      console.log("the result is", result);
+      if (result) {
+        return result;
+      } else {
+        return null;
+      }
+    } catch (err) {
+      console.log(err);
+      throw new Error(
+        "Some unexpected error occurred while updating user in userService.addUserDefinedCategories"
+      );
+    }
+  }
 };

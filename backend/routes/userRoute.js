@@ -70,4 +70,10 @@ router.get(
   UserController.getCategories
 );
 
+router.post(
+  "/category/add/:userID",
+  passport.authenticate("jwt", { session: false }),
+  UserController.addUserDefinedCategories
+);
+
 module.exports = router;
