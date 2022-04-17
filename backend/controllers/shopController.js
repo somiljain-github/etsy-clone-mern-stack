@@ -12,8 +12,7 @@ module.exports = class ShopController {
 
     try {
       let shopExisits = await SERVICE.shopExists(shopName);
-      console.log(shopExisits);
-      if (shopExisits) {
+      if (shopExisits === []) {
         console.log(".");
         res.statusMessage = "Shop name already taken by a user";
         res.sendStatus(409).end();
