@@ -40,26 +40,24 @@ function Login({ user, loginUser }) {
         console.log(response.data);
         if (response.data.status === 201) {
           const token = response.data.token;
-          const email_id = response.data.email_id;
-          const userid = response.data.userid;
+          const emailID = response.data.user.emailID;
+          const userID = response.data.user._id;
 
           if (response.data.shopid !== null) {
             const shopid = response.data.shopid;
             window.localStorage.setItem("shopid", shopid);
           }
           window.localStorage.setItem("token", token);
-          window.localStorage.setItem("email_id", email_id);
-          window.localStorage.setItem("userid", userid);
-
-          // console.log(response.data);
+          window.localStorage.setItem("emailID", emailID);
+          window.localStorage.setItem("userID", userID);
           loginUser(response.data.email_id);
           navigate("/home");
-        } else if (response.data.code === 400) {
-          setMessage(response.data.message);
         }
       })
       .catch((err) => {
-        console.log("error login");
+        if (err.response.status === 400) {
+          setMessage(err.response.data.message);
+        }
       });
   };
 
