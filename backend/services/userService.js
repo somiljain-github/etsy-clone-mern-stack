@@ -301,4 +301,25 @@ module.exports = class UserService {
       );
     }
   }
+
+  static async getUserbyParameter(param, val) {
+    const query = { [param]: val };
+    console.log(query);
+    let userObj = {};
+    return new Promise(function(resolve, reject) {
+      UserModel.findOne(query)
+        .then((res) => {
+          if (res) {
+            userObj = res;
+            console.log("INSIDE GET USER", userObj);
+            resolve(userObj);
+          } else {
+            reject("User does NOT exist with shopName " + val);
+          }
+        })
+        .catch((err) => {
+          throw err;
+        });
+    });
+  }
 };

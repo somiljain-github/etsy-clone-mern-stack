@@ -1,0 +1,35 @@
+{
+    "models": {
+        "item": {
+            "id": "_id",
+            "name": "name",
+            "displayPicture": "displayPicture",
+            "price": "price",
+            "category": "category",
+            "description": "description",
+            "quantity": "quantity",
+            "salesCount": "salesCount",
+            "userID": "userID"
+        },
+        "user": {
+            "id": "_id",
+            "emailID": "emailID",
+            "name": "name",
+            "password": "password",
+            "dob": "dob",
+            "gender": "gender",
+            "profilePicture": "profilePicture",
+            "country": "country",
+            "city": "city",
+            "address": "address",
+            "about": "about",
+            "phoneNumber": "phoneNumber",
+            "currencyID": "currencyID",
+            "shopName": "shopName",
+            "shopDp": "shopDp",
+            "userDefinedCategories": "userDefinedCategories",
+            "cart": "cart",
+            "favourites": "favourites"
+        }
+    }
+}

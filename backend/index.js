@@ -11,6 +11,9 @@ const testAPI = require("./routes/test_route");
 const registerRoute = require("./routes/registerRoute");
 const loginRoute = require("./routes/loginRoute");
 const userRoute = require("./routes/userRoute");
+const shopRoute = require("./routes/shopRoute");
+const constantsRoute = require("./routes/constantsRoute");
+const itemRoute = require("./routes/itemRoute");
 //================================start of config================================
 dotenv.config();
 
