@@ -60,7 +60,6 @@ module.exports = class ShopController {
   //get shop details (shopName, shopDp), owner details(), items(list of item objects)
   static async getShopDetails(req, res) {
     const shopName = req.params.shopName;
-
     const shopDetailsObjs = {};
 
     try {
@@ -93,10 +92,11 @@ module.exports = class ShopController {
         .catch((err) => {
           throw err;
         });
+      //console.log(result);
     } catch (e) {
       console.log(e);
       res.statusMessage = e;
-      res.sendStatus(500);
+      res.send(500);
     }
   }
 };
