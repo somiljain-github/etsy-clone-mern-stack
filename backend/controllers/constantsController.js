@@ -1,19 +1,34 @@
 const SERVICE = require("../services/constantsService");
 const constants = require("../constants.json");
+const kafka = require("../kafka/client");
 
 const MODELS = constants.models;
 
 module.exports = class ConstantsController {
-  static async getCountries(req, res) {
+  static async getCountries(req, resp) {
     try {
-      const result = await SERVICE.getCountries();
-      console.log(result);
-      if (result) {
-        res
-          .status(200)
-          .send(result)
-          .end();
-      }
+      let message = { function: "getCountries", data: null };
+      kafka.make_request(
+        "topic-constants-get-countries",
+        message,
+        async (err, result) => {
+          if (err) {
+            console.error(err);
+            resp.json({
+              status: "Error",
+              msg: "System error, try again",
+            });
+          } else {
+            console.log(result);
+            if (result) {
+              resp
+                .status(200)
+                .send(result)
+                .end();
+            }
+          }
+        }
+      );
     } catch (e) {
       console.log(e);
       res.statusMessage = e;
@@ -23,14 +38,28 @@ module.exports = class ConstantsController {
 
   static async getCategories(req, res) {
     try {
-      const result = await SERVICE.getCategories();
-      console.log(result);
-      if (result) {
-        res
-          .status(200)
-          .send(result)
-          .end();
-      }
+      let message = { function: "getCategories", data: null };
+      kafka.make_request(
+        "topic-constants-get-categories",
+        message,
+        async (err, result) => {
+          if (err) {
+            console.error(err);
+            resp.json({
+              status: "Error",
+              msg: "System error, try again",
+            });
+          } else {
+            if (result) {
+              console.log(result);
+              res
+                .status(200)
+                .send(result)
+                .end();
+            }
+          }
+        }
+      );
     } catch (e) {
       console.log(e);
       res.statusMessage = e;
@@ -40,14 +69,28 @@ module.exports = class ConstantsController {
 
   static async getCurrencies(req, res) {
     try {
-      const result = await SERVICE.getCurrencies();
-      console.log(result);
-      if (result) {
-        res
-          .status(200)
-          .send(result)
-          .end();
-      }
+      let message = { function: "getCurrencies", data: null };
+      kafka.make_request(
+        "topic-constants-get-currencies",
+        message,
+        async (err, result) => {
+          if (err) {
+            console.error(err);
+            resp.json({
+              status: "Error",
+              msg: "System error, try again",
+            });
+          } else {
+            console.log(result);
+            if (result) {
+              res
+                .status(200)
+                .send(result)
+                .end();
+            }
+          }
+        }
+      );
     } catch (e) {
       console.log(e);
       res.statusMessage = e;

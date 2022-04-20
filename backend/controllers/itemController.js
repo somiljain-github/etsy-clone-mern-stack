@@ -3,49 +3,117 @@ const SERVICE = require("../services/itemService");
 const USERSERVICE = require("../services/userService");
 const constants = require("../constants.json");
 const { uploadFile, getFileStream } = require("../config/s3.config.js");
+const kafka = require("../kafka/client");
 
 const ITEMMODEL = constants.models.item;
 const USERMODEL = constants.models.user;
 
 module.exports = class itemController {
-  static async getAll(req, res) {
+  static async getAll(req, resp) {
     const userID = req.params.userId;
     const queryVal = { $ne: [userID] };
-    if (userID) {
-      let items = await SERVICE.getItemsbyParamter(ITEMMODEL.userID, queryVal);
-      const favItems = await USERSERVICE.getFavourites({ userID });
-      console.log(items);
-      console.log(favItems);
-      let updatedItems = await SERVICE.markFavourteItems(
-        items,
-        favItems.favourites
-      );
-      res
-        .status(200)
-        .send(updatedItems)
-        .end();
-    } else {
-      res.status(400).send({
+    if (!userID) {
+      return res.status(400).send({
         status: false,
         data: "UserId missing.",
       });
     }
+    let data = { param: ITEMMODEL.userID, val: queryVal };
+    try {
+      let message = { function: "getItemsbyParamter", data: data };
+      kafka.make_request("topic-item-get-all-items", message, (err, items) => {
+        if (err) {
+          console.error(err);
+          resp.json({
+            status: "Error",
+            msg: "System error, try again",
+          });
+        } else {
+          message = { function: "getFavourites", data: { userID } };
+          kafka.make_request(
+            "topic-item-get-favourites",
+            message,
+            (err, favItems) => {
+              if (err) {
+                console.error(err);
+                resp.json({
+                  status: "Error",
+                  msg: "System error, try again",
+                });
+              } else {
+                console.log(items);
+                console.log(favItems);
+                data = { items, favourites: favItems.favourites };
+                message = { function: "markFavourteItems", data: data };
+                kafka.make_request(
+                  "topic-item-mark-favourites",
+                  message,
+                  (err, updatedItems) => {
+                    if (err) {
+                      console.error(err);
+                      resp.json({
+                        status: "Error",
+                        msg: "System error, try again",
+                      });
+                    } else {
+                      res
+                        .status(200)
+                        .send(updatedItems)
+                        .end();
+                    }
+                  }
+                );
+              }
+            }
+          );
+        }
+      });
+    } catch (error) {
+      console.log(
+        "some error occured in loginController.js and the error is",
+        error
+      );
+      res.status(500).json({ error: error });
+    }
   }
 
   static async getItem(req, res) {
-    const itemId = req.params.itemId;
-    const param = ITEMMODEL.id;
-    if (itemId) {
-      const items = await SERVICE.getItemsbyParamter(param, itemId);
-      res
-        .status(200)
-        .send(items)
-        .end();
-    } else {
-      res.status(400).send({
-        status: false,
-        data: "ItemId missing.",
-      });
+    try {
+      const itemId = req.params.itemId;
+      const param = ITEMMODEL.id;
+      if (itemId) {
+        let data = { param, val: itemId };
+        let message = { function: "getItemsbyParamter", data: data };
+        kafka.make_request(
+          "topic-item-get-all-items",
+          message,
+          (err, items) => {
+            if (err) {
+              console.error(err);
+              resp.json({
+                status: "Error",
+                msg: "System error, try again",
+              });
+            } else {
+              res
+                .status(200)
+                .send(items)
+                .end();
+            }
+          }
+        );
+      } else {
+        res.status(400).send({
+          status: false,
+          data: "ItemId missing.",
+        });
+      }
+    } catch (error) {
+      console.log(
+        "some error occured in loginController.js and the error is",
+        error
+      );
+      res.status(500).json({ error: error });
     }
   }
 
@@ -59,11 +127,26 @@ module.exports = class itemController {
 
     if (maxPrice && minPrice) {
       try {
-        const items = await SERVICE.getItemsbyParamter(param, query);
-        res
-          .status(200)
-          .send(items)
-          .end();
+        let data = { param, val: query };
+        let message = { function: "getItemsbyParamter", data: data };
+        kafka.make_request(
+          "topic-item-get-items-after-filter",
+          message,
+          async (err, items) => {
+            if (err) {
+              console.error(err);
+              resp.json({
+                status: "Error",
+                msg: "System error, try again",
+              });
+            } else {
+              res
+                .status(200)
+                .send(items)
+                .end();
+            }
+          }
+        );
       } catch (err) {
         res.statusMessage = "Something went wrong. Details: " + e;
         res.send(500);
@@ -77,23 +160,43 @@ module.exports = class itemController {
   }
 
   static async getItemsAfterSearch(req, res) {
-    const search = req.params.search;
-
-    const param = ITEMMODEL.name;
-    const query = { $regex: search, $options: "i" };
-    console.log(query);
-
-    if (search) {
-      const items = await SERVICE.getItemsbyParamter(param, query);
-      res
-        .status(200)
-        .send(items)
-        .end();
-    } else {
-      res.status(400).send({
-        status: false,
-        data: "Search phrase missing.",
-      });
+    try {
+      const search = req.params.search;
+      const param = ITEMMODEL.name;
+      const query = { $regex: search, $options: "i" };
+      console.log(query);
+      if (!search) {
+        return res.status(400).send({
+          status: false,
+          data: "Search phrase missing.",
+        });
+      }
+      let data = { param, val: query };
+      let message = { function: "getItemsbyParamter", data };
+      kafka.make_request(
+        "topic-item-get-items-after-search",
+        message,
+        async (err, items) => {
+          if (err) {
+            console.error(err);
+            resp.json({
+              status: "Error",
+              msg: "System error, try again",
+            });
+          } else {
+            res
+              .status(200)
+              .send(items)
+              .end();
+          }
+        }
+      );
+    } catch (error) {
+      console.log(
+        "some error occured in loginController.js and the error is",
+        error
+      );
+      res.status(500).json({ error: error });
     }
   }
 };

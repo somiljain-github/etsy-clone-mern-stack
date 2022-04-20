@@ -1,37 +1,38 @@
 const UserService = require("../services/userService");
-const UserModel = require("../models/userModel");
+const make_request = require("../kafka/client");
+const kafka = require("../kafka/client");
 
 module.exports = class UserController {
   static async getUserDetails(req, resp) {
     const userParamsObj = { userID: req.params.userID };
-
-    const userObj = await UserService.getUser(userParamsObj);
-    if (userObj && !userObj.userFound) {
-      console.log(
-        "The user with id as",
-        userParamsObj.userID,
-        "does not exist."
-      );
-      resp.status(400).send({
-        ...returnMessage,
-        success: false,
-        status: 400,
-        message: "The user does not exist.",
-      });
-    } else {
-      console.log(
-        "user with id as",
-        userParamsObj.userID,
-        "found. Moving ahead with getting respective items"
-      );
-      if (userObj.user.shopName) {
-        const items = await UserService.getItems(userParamsObj);
-        if (items && items.itemFound) {
-          userObj.user.item = item;
+    let message = {
+      function: "getUser",
+      data: userParamsObj,
+    };
+    kafka.make_request("get-customer-details", message, (err, results) => {
+      if (err) {
+        console.error(err);
+        resp.json({
+          status: "Error",
+          msg: "System error, try again",
+        });
+      } else {
+        if (results && !results.userFound) {
+          console.log(
+            "The user with id as",
+            userParamsObj.userID,
+            "does not exist."
+          );
+          resp.status(400).send({
+            success: false,
+            status: 400,
+            message: "The user does not exist.",
+          });
         }
+        resp.status(200).send(results);
+        resp.end();
       }
-    }
-    resp.status(200).send(userObj);
+    });
   }
 
   static async updateUserDetails(req, resp) {
@@ -39,13 +40,29 @@ module.exports = class UserController {
     userParamsObj.userDetails = req.body;
     const response = {};
     try {
-      const result = await UserService.updateUser(userParamsObj);
-      if (result) {
-        response.user = result;
-        response.success = true;
-        response.status = "200";
-        return resp.status(200).send(response);
-      }
+      let message = { function: "updateUser", data: userParamsObj };
+      kafka.make_request("topic-update-user", message, (err, results) => {
+        if (err) {
+          console.error(err);
+          resp.json({
+            status: "Error",
+            msg: "System error, try again",
+          });
+        } else {
+          if (results) {
+            response.user = results;
+            response.success = true;
+            response.status = "200";
+            return resp.status(200).send(response);
+          } else {
+            response.user = results;
+            response.success = false;
+            response.status = "503";
+            response.message = "Database returned null";
+            return resp.status(response.status).send(response);
+          }
+        }
+      });
     } catch (e) {
       console.log(e);
       response.success = false;
@@ -60,13 +77,29 @@ module.exports = class UserController {
     userParamsObj.currencyID = req.body.currencyID;
     const response = {};
     try {
-      const result = await UserService.updateCurrency(userParamsObj);
-      if (result) {
-        response.user = result;
-        response.success = true;
-        response.status = "200";
-        return resp.status(200).send(response);
-      }
+      let message = { function: "updateCurrency", data: userParamsObj };
+      kafka.make_request("topic-update-currency", message, (err, result) => {
+        if (err) {
+          console.error(err);
+          resp.json({
+            status: "Error",
+            msg: "System error, try again",
+          });
+        } else {
+          if (result) {
+            response.user = result;
+            response.success = true;
+            response.status = "200";
+            return resp.status(200).send(response);
+          } else {
+            response.user = results;
+            response.success = false;
+            response.status = "503";
+            response.message = "Database returned null";
+            return resp.status(response.status).send(response);
+          }
+        }
+      });
     } catch (e) {
       console.log(e);
       response.success = false;
@@ -79,20 +112,31 @@ module.exports = class UserController {
   static async getFavourites(req, resp) {
     const userParamsObj = { userID: req.params.userID };
     const response = { favouritesFound: false };
+
     try {
-      const result = await UserService.getFavourites(userParamsObj);
-      if (result && result.favouritesFound) {
-        response.favouritesFound = result.favouritesFound;
-        response.favourites = result.favourites;
-        response.success = true;
-        response.status = "200";
-        return resp.status(200).send(response);
-      } else {
-        response.favouritesFound = result.favouritesFound;
-        response.success = false;
-        response.status = "404";
-        return resp.status(404).send(response);
-      }
+      let message = { function: "getFavourites", data: userParamsObj };
+      kafka.make_request("topic-get-favourites", message, (err, result) => {
+        if (err) {
+          console.error(err);
+          resp.json({
+            status: "Error",
+            msg: "System error, try again",
+          });
+        } else {
+          if (result && result.favouritesFound) {
+            response.favouritesFound = result.favouritesFound;
+            response.favourites = result.favourites;
+            response.success = true;
+            response.status = "200";
+            return resp.status(200).send(response);
+          } else {
+            response.favouritesFound = result.favouritesFound;
+            response.success = false;
+            response.status = "404";
+            return resp.status(404).send(response);
+          }
+        }
+      });
     } catch (e) {
       console.log(e);
       response.success = false;
@@ -107,18 +151,28 @@ module.exports = class UserController {
     userParamsObj.itemID = req.body.itemID;
     const response = {};
     try {
-      const result = await UserService.addFavourites(userParamsObj);
-      if (result) {
-        response._id = result._id;
-        response.favourites = result.favourites;
-        response.success = true;
-        response.status = "200";
-        return resp.status(200).send(response);
-      } else {
-        response.success = false;
-        response.status = "404";
-        return resp.status(404).send(response);
-      }
+      let message = { function: "addFavourites", data: userParamsObj };
+      kafka.make_request("topic-add-favourites", message, (err, result) => {
+        if (err) {
+          console.error(err);
+          resp.json({
+            status: "Error",
+            msg: "System error, try again",
+          });
+        } else {
+          if (result) {
+            response._id = result._id;
+            response.favourites = result.favourites;
+            response.success = true;
+            response.status = "200";
+            return resp.status(200).send(response);
+          } else {
+            response.success = false;
+            response.status = "404";
+            return resp.status(404).send(response);
+          }
+        }
+      });
     } catch (e) {
       console.log(e);
       response.success = false;
@@ -127,23 +181,34 @@ module.exports = class UserController {
       resp.status(500).send(response);
     }
   }
+
   static async removeFavourites(req, resp) {
     const userParamsObj = { userID: req.params.userID };
     userParamsObj.itemID = req.body.itemID;
     const response = {};
     try {
-      const result = await UserService.removeFavourites(userParamsObj);
-      if (result) {
-        response._id = result._id;
-        response.favourites = result.favourites;
-        response.success = true;
-        response.status = "200";
-        return resp.status(200).send(response);
-      } else {
-        response.success = false;
-        response.status = "404";
-        return resp.status(404).send(response);
-      }
+      let message = { function: "removeFavourites", data: userParamsObj };
+      kafka.make_request("topic-remove-favourites", message, (err, result) => {
+        if (err) {
+          console.error(err);
+          resp.json({
+            status: "Error",
+            msg: "System error, try again",
+          });
+        } else {
+          if (result) {
+            response._id = result._id;
+            response.favourites = result.favourites;
+            response.success = true;
+            response.status = "200";
+            return resp.status(200).send(response);
+          } else {
+            response.success = false;
+            response.status = "404";
+            return resp.status(404).send(response);
+          }
+        }
+      });
     } catch (e) {
       console.log(e);
       response.success = false;
@@ -157,19 +222,29 @@ module.exports = class UserController {
     const userParamsObj = { userID: req.params.userID };
     const response = { cartFound: false };
     try {
-      const result = await UserService.getCartItems(userParamsObj);
-      if (result && result.cartFound) {
-        response.cartFound = result.cartFound;
-        response.cart = result.cart;
-        response.success = true;
-        response.status = "200";
-        return resp.status(200).send(response);
-      } else {
-        response.cartFound = result.cartFound;
-        response.success = false;
-        response.status = "404";
-        return resp.status(404).send(response);
-      }
+      let message = { function: "getCartItems", data: userParamsObj };
+      kafka.make_request("topic-get-cart-items", message, (err, result) => {
+        if (err) {
+          console.error(err);
+          resp.json({
+            status: "Error",
+            msg: "System error, try again",
+          });
+        } else {
+          if (result && result.cartFound) {
+            response.cartFound = result.cartFound;
+            response.cart = result.cart;
+            response.success = true;
+            response.status = "200";
+            return resp.status(200).send(response);
+          } else {
+            response.cartFound = result.cartFound;
+            response.success = false;
+            response.status = "404";
+            return resp.status(404).send(response);
+          }
+        }
+      });
     } catch (e) {
       console.log(e);
       response.success = false;
@@ -184,17 +259,27 @@ module.exports = class UserController {
     userParamsObj.itemID = req.body.itemID;
     const response = {};
     try {
-      const result = await UserService.addCartItems(userParamsObj);
-      if (result) {
-        response.cart = result.cart;
-        response.success = true;
-        response.status = "200";
-        return resp.status(200).send(response);
-      } else {
-        response.success = false;
-        response.status = "404";
-        return resp.status(404).send(response);
-      }
+      let message = { function: "addCartItems", data: userParamsObj };
+      kafka.make_request("topic-add-cart-items", message, (err, result) => {
+        if (err) {
+          console.error(err);
+          resp.json({
+            status: "Error",
+            msg: "System error, try again",
+          });
+        } else {
+          if (result) {
+            response.cart = result.cart;
+            response.success = true;
+            response.status = "200";
+            return resp.status(200).send(response);
+          } else {
+            response.success = false;
+            response.status = "404";
+            return resp.status(404).send(response);
+          }
+        }
+      });
     } catch (e) {
       console.log(e);
       response.success = false;
@@ -209,17 +294,27 @@ module.exports = class UserController {
     userParamsObj.itemID = req.body.itemID;
     const response = {};
     try {
-      const result = await UserService.removeCartItems(userParamsObj);
-      if (result) {
-        response.cart = result.cart;
-        response.success = true;
-        response.status = "200";
-        return resp.status(200).send(response);
-      } else {
-        response.success = false;
-        response.status = "404";
-        return resp.status(404).send(response);
-      }
+      let message = { function: "removeCartItems", data: userParamsObj };
+      kafka.make_request("topic-remove-cart-items", message, (err, result) => {
+        if (err) {
+          console.error(err);
+          resp.json({
+            status: "Error",
+            msg: "System error, try again",
+          });
+        } else {
+          if (result) {
+            response.cart = result.cart;
+            response.success = true;
+            response.status = "200";
+            return resp.status(200).send(response);
+          } else {
+            response.success = false;
+            response.status = "404";
+            return resp.status(404).send(response);
+          }
+        }
+      });
     } catch (e) {
       console.log(e);
       response.success = false;
@@ -234,17 +329,34 @@ module.exports = class UserController {
     userParamsObj.itemID = req.body.itemID;
     const response = {};
     try {
-      const result = await UserService.decrementCartItemQuantity(userParamsObj);
-      if (result) {
-        response.cart = result.cart;
-        response.success = true;
-        response.status = "200";
-        return resp.status(200).send(response);
-      } else {
-        response.success = false;
-        response.status = "404";
-        return resp.status(404).send(response);
-      }
+      let message = {
+        function: "decrementCartItemQuantity",
+        data: userParamsObj,
+      };
+      kafka.make_request(
+        "topic-decrement-cart-items",
+        message,
+        (err, result) => {
+          if (err) {
+            console.error(err);
+            resp.json({
+              status: "Error",
+              msg: "System error, try again",
+            });
+          } else {
+            if (result) {
+              response.cart = result.cart;
+              response.success = true;
+              response.status = "200";
+              return resp.status(200).send(response);
+            } else {
+              response.success = false;
+              response.status = "404";
+              return resp.status(404).send(response);
+            }
+          }
+        }
+      );
     } catch (e) {
       console.log(e);
       response.success = false;
@@ -258,19 +370,30 @@ module.exports = class UserController {
     const userParamsObj = { userID: req.params.userID };
     const response = { categoriesFound: false };
     try {
-      const result = await UserService.getCategories(userParamsObj);
-      if (result && result.categoriesFound) {
-        response.categoriesFound = result.categoriesFound;
-        response.userDefinedCategories = result.userDefinedCategories;
-        response.success = true;
-        response.status = "200";
-        return resp.status(200).send(response);
-      } else {
-        response.categoriesFound = result.categoriesFound;
-        response.success = false;
-        response.status = "404";
-        return resp.status(404).send(response);
-      }
+      let message = { function: "getCategories", data: userParamsObj };
+      kafka.make_request("topic-get-categories", message, (err, result) => {
+        if (err) {
+          console.error(err);
+          resp.json({
+            status: "Error",
+            msg: "System error, try again",
+          });
+        } else {
+          if (result && result.categoriesFound) {
+            response.categoriesFound = result.categoriesFound;
+            response.userDefinedCategories = result.userDefinedCategories;
+            response.generalCategories = result.generalCategories;
+            response.success = true;
+            response.status = "200";
+            return resp.status(200).send(response);
+          } else {
+            response.categoriesFound = result.categoriesFound;
+            response.success = false;
+            response.status = "404";
+            return resp.status(404).send(response);
+          }
+        }
+      });
     } catch (e) {
       console.log(e);
       response.success = false;
@@ -285,18 +408,35 @@ module.exports = class UserController {
     userParamsObj.category = req.body.category;
     const response = {};
     try {
-      const result = await UserService.addUserDefinedCategories(userParamsObj);
-      if (result) {
-        response._id = result._id;
-        response.userDefinedCategories = result.userDefinedCategories;
-        response.success = true;
-        response.status = "200";
-        return resp.status(200).send(response);
-      } else {
-        response.success = false;
-        response.status = "404";
-        return resp.status(404).send(response);
-      }
+      let message = {
+        function: "addUserDefinedCategories",
+        data: userParamsObj,
+      };
+      kafka.make_request(
+        "topic-add-UserDefinedCategories",
+        message,
+        (err, result) => {
+          if (err) {
+            console.error(err);
+            resp.json({
+              status: "Error",
+              msg: "System error, try again",
+            });
+          } else {
+            if (result) {
+              response._id = result._id;
+              response.userDefinedCategories = result.userDefinedCategories;
+              response.success = true;
+              response.status = "200";
+              return resp.status(200).send(response);
+            } else {
+              response.success = false;
+              response.status = "404";
+              return resp.status(404).send(response);
+            }
+          }
+        }
+      );
     } catch (e) {
       console.log(e);
       response.success = false;

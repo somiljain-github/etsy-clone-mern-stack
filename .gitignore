@@ -40,6 +40,8 @@ build/Release
 # Dependency directories
 backend/node_modules/
 frontend/node_modules/
+kafka-backend/node_modules/
+*/node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -74,6 +76,8 @@ backend/.env
 backend/.env.test
 backend/Utils/keys.js
 backend/config/
+kafka-backend/.env
+kafka-backend/.env.test
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache

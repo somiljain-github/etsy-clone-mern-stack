@@ -1,0 +1,19 @@
+{
+  "name": "kafka-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Somil",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "kafka-node": "^5.0.0",
+    "mongoose": "^6.3.0",
+    "nodemon": "^2.0.15",
+    "passport-jwt": "^4.0.0"
+  }
+}

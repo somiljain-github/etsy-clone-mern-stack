@@ -1,325 +1,334 @@
-const UserModel = require("../models/userModel");
-const ItemModel = require("../models/itemModel");
+// const UserModel = require("../models/userModel");
+// const ItemModel = require("../models/itemModel");
 
-module.exports = class UserService {
-  static async getUser({ userID }) {
-    const query = { _id: userID };
-    const userObj = {};
-    try {
-      const result = await UserModel.findOne(query);
+// module.exports = class UserService {
+//   static async getUser({ userID }) {
+//     const query = { _id: userID };
+//     const userObj = {};
+//     try {
+//       const result = await UserModel.findOne(query);
 
-      if (result) {
-        userObj.userFound = true;
-        userObj.user = result;
-      } else {
-        userObj.userFound = false;
-      }
-      return userObj;
-    } catch (error) {
-      console.log(`Could not fetch the user in userService.getUser ${error}`);
-    }
-  }
+//       if (result) {
+//         userObj.userFound = true;
+//         userObj.user = result;
+//       } else {
+//         userObj.userFound = false;
+//         return userObj;
+//       }
+//       if (result.user.shopName) {
+//         const items = await UserService.getItems(userParamsObj);
+//         if (items && items.itemFound) {
+//           userObj.user.item = item;
+//         }
+//       }
+//       return userObj;
+//     } catch (error) {
+//       console.log(`Could not fetch the user in userService.getUser ${error}`);
+//     }
+//   }
 
-  static async getItems({ userID }) {
-    const query = { userID };
-    const itemObj = {};
-    try {
-      const result = await ItemModel.findById(query);
+//   static async getItems({ userID }) {
+//     console.log("in the getItems function");
+//     const query = { userID };
+//     const itemObj = {};
+//     try {
+//       const result = await ItemModel.findById(query);
 
-      if (result) {
-        itemObj.itemFound = true;
-        itemObj.items = result;
-      } else {
-        itemObj.itemFound = false;
-      }
-      return itemObj;
-    } catch (error) {
-      console.log(`Could not fetch the item in userService getItems ${error}`);
-    }
-  }
+//       if (result) {
+//         itemObj.itemFound = true;
+//         itemObj.items = result;
+//       } else {
+//         itemObj.itemFound = false;
+//       }
+//       console.log("and it is returning", itemObj);
+//       return itemObj;
+//     } catch (error) {
+//       console.log(`Could not fetch the item in userService getItems ${error}`);
+//     }
+//   }
 
-  static async updateUser({ userID, userDetails }) {
-    try {
-      const filterCondition = { _id: userID };
-      const updateCondition = userDetails;
-      const result = await UserModel.findOneAndUpdate(
-        filterCondition,
-        updateCondition,
-        { new: true }
-      );
-      if (result) {
-        return result;
-      } else {
-        return null;
-      }
-    } catch (err) {
-      console.log(err);
-      throw new Error(
-        "Some unexpected error occurred while updating user in userService.updateUser"
-      );
-    }
-  }
+//   static async updateUser({ userID, userDetails }) {
+//     try {
+//       const filterCondition = { _id: userID };
+//       const updateCondition = userDetails;
+//       const result = await UserModel.findOneAndUpdate(
+//         filterCondition,
+//         updateCondition,
+//         { new: true }
+//       );
+//       if (result) {
+//         return result;
+//       } else {
+//         return null;
+//       }
+//     } catch (err) {
+//       console.log(err);
+//       throw new Error(
+//         "Some unexpected error occurred while updating user in userService.updateUser"
+//       );
+//     }
+//   }
 
-  static async updateCurrency({ userID, currencyID }) {
-    try {
-      const filterCondition = { _id: userID };
-      const updateCondition = { currencyID };
-      const result = await UserModel.findOneAndUpdate(
-        filterCondition,
-        updateCondition,
-        { new: true }
-      );
-      if (result) {
-        return result;
-      } else {
-        return null;
-      }
-    } catch (err) {
-      console.log(err);
-      throw new Error(
-        "Some unexpected error occurred while updating user in userService.updateCurrency"
-      );
-    }
-  }
+//   static async updateCurrency({ userID, currencyID }) {
+//     try {
+//       const filterCondition = { _id: userID };
+//       const updateCondition = { currencyID };
+//       const result = await UserModel.findOneAndUpdate(
+//         filterCondition,
+//         updateCondition,
+//         { new: true }
+//       );
+//       if (result) {
+//         return result;
+//       } else {
+//         return null;
+//       }
+//     } catch (err) {
+//       console.log(err);
+//       throw new Error(
+//         "Some unexpected error occurred while updating user in userService.updateCurrency"
+//       );
+//     }
+//   }
 
-  static async getFavourites({ userID }) {
-    const query = { _id: userID };
-    const itemObj = { favouritesFound: false };
-    try {
-      const result = await UserModel.findById(query).select("favourites");
-      if (result) {
-        itemObj.favouritesFound = true;
-        itemObj.favourites = result.favourites;
-      }
-      return itemObj;
-    } catch (error) {
-      console.log(
-        `Could not fetch the user in userService getFavourites ${error}`
-      );
-      return itemObj;
-    }
-  }
+//   static async getFavourites({ userID }) {
+//     const query = { _id: userID };
+//     const itemObj = { favouritesFound: false };
+//     try {
+//       const result = await UserModel.findById(query).select("favourites");
+//       if (result) {
+//         itemObj.favouritesFound = true;
+//         itemObj.favourites = result.favourites;
+//       }
+//       return itemObj;
+//     } catch (error) {
+//       console.log(
+//         `Could not fetch the user in userService getFavourites ${error}`
+//       );
+//       return itemObj;
+//     }
+//   }
 
-  static async addFavourites({ userID, itemID }) {
-    try {
-      const filterCondition = { _id: userID };
-      const updateCondition = { favourites: itemID };
-      const result = await UserModel.findOneAndUpdate(
-        filterCondition,
-        { $addToSet: updateCondition },
-        { new: true }
-      ).select("favourites");
-      if (result) {
-        return result;
-      } else {
-        return null;
-      }
-    } catch (err) {
-      console.log(err);
-      throw new Error(
-        "Some unexpected error occurred while updating user in userService.addFavourites"
-      );
-    }
-  }
+//   static async addFavourites({ userID, itemID }) {
+//     try {
+//       const filterCondition = { _id: userID };
+//       const updateCondition = { favourites: itemID };
+//       const result = await UserModel.findOneAndUpdate(
+//         filterCondition,
+//         { $addToSet: updateCondition },
+//         { new: true }
+//       ).select("favourites");
+//       if (result) {
+//         return result;
+//       } else {
+//         return null;
+//       }
+//     } catch (err) {
+//       console.log(err);
+//       throw new Error(
+//         "Some unexpected error occurred while updating user in userService.addFavourites"
+//       );
+//     }
+//   }
 
-  static async removeFavourites({ userID, itemID }) {
-    try {
-      const filterCondition = { _id: userID };
-      const updateCondition = { favourites: itemID };
-      const result = await UserModel.findOneAndUpdate(
-        filterCondition,
-        {
-          $pull: updateCondition,
-        },
-        { new: true }
-      ).select("favourites");
-      console.log("the result is", result);
-      if (result) {
-        return result;
-      } else {
-        return null;
-      }
-    } catch (err) {
-      console.log(err);
-      throw new Error(
-        "Some unexpected error occurred while updating user in userService.removeFavourites"
-      );
-    }
-  }
+//   static async removeFavourites({ userID, itemID }) {
+//     try {
+//       const filterCondition = { _id: userID };
+//       const updateCondition = { favourites: itemID };
+//       const result = await UserModel.findOneAndUpdate(
+//         filterCondition,
+//         {
+//           $pull: updateCondition,
+//         },
+//         { new: true }
+//       ).select("favourites");
+//       console.log("the result is", result);
+//       if (result) {
+//         return result;
+//       } else {
+//         return null;
+//       }
+//     } catch (err) {
+//       console.log(err);
+//       throw new Error(
+//         "Some unexpected error occurred while updating user in userService.removeFavourites"
+//       );
+//     }
+//   }
 
-  static async getCartItems({ userID }) {
-    const query = { _id: userID };
-    const itemObj = {};
-    try {
-      const result = await UserModel.findById(query).select("cart");
-      console.log(result);
-      if (result) {
-        itemObj.cartFound = true;
-        itemObj.cart = result.cart;
-      } else {
-        itemObj.cartFound = false;
-      }
-      return itemObj;
-    } catch (error) {
-      console.log(
-        `Could not fetch the user in userService getCartItems; and the error is ${error}`
-      );
-      itemObj.cartFound = false;
-      return itemObj;
-    }
-  }
+//   static async getCartItems({ userID }) {
+//     const query = { _id: userID };
+//     const itemObj = {};
+//     try {
+//       const result = await UserModel.findById(query).select("cart");
+//       console.log(result);
+//       if (result) {
+//         itemObj.cartFound = true;
+//         itemObj.cart = result.cart;
+//       } else {
+//         itemObj.cartFound = false;
+//       }
+//       return itemObj;
+//     } catch (error) {
+//       console.log(
+//         `Could not fetch the user in userService getCartItems; and the error is ${error}`
+//       );
+//       itemObj.cartFound = false;
+//       return itemObj;
+//     }
+//   }
 
-  static async addCartItems({ userID, itemID }) {
-    try {
-      const filterCondition = { _id: userID };
-      const updateCondition = { cart: itemID };
-      const result = await UserModel.findOneAndUpdate(
-        filterCondition,
-        { $push: updateCondition },
-        { new: true }
-      ).select("cart");
-      if (result) {
-        return result;
-      } else {
-        return null;
-      }
-    } catch (err) {
-      console.log(err);
-      throw new Error(
-        "Some unexpected error occurred while updating user in userService.addCartItems"
-      );
-    }
-  }
+//   static async addCartItems({ userID, itemID }) {
+//     try {
+//       const filterCondition = { _id: userID };
+//       const updateCondition = { cart: itemID };
+//       const result = await UserModel.findOneAndUpdate(
+//         filterCondition,
+//         { $push: updateCondition },
+//         { new: true }
+//       ).select("cart");
+//       if (result) {
+//         return result;
+//       } else {
+//         return null;
+//       }
+//     } catch (err) {
+//       console.log(err);
+//       throw new Error(
+//         "Some unexpected error occurred while updating user in userService.addCartItems"
+//       );
+//     }
+//   }
 
-  static async decrementCartItemQuantity({ userID, itemID }) {
-    try {
-      const filterCondition = { _id: userID };
-      const result = await UserModel.findOne(filterCondition).select("cart");
-      if (result) {
-        let cart = result.cart;
-        let idx = cart.findIndex((cartItem) => cartItem == itemID);
-        if (idx != -1) {
-          cart.splice(idx, 1);
-        } else {
-          return null;
-        }
-        const updateCondition = { cart };
-        try {
-          const result = await UserModel.findOneAndUpdate(
-            filterCondition,
-            updateCondition,
-            { new: true }
-          ).select("cart");
-          if (result) {
-            console.log("the final cart is", result.cart);
-            return result;
-          } else {
-            return null;
-          }
-        } catch (error) {
-          console.log(err);
-          throw new Error(
-            "Some unexpected error occurred in the inner loop while updating cart in userService.decrementCartItemQuantity"
-          );
-        }
-      } else {
-        return null;
-      }
-    } catch (err) {
-      console.log(err);
-      throw new Error(
-        "Some unexpected error occurred while updating cart in userService.decrementCartItemQuantity"
-      );
-    }
-  }
+//   static async decrementCartItemQuantity({ userID, itemID }) {
+//     try {
+//       const filterCondition = { _id: userID };
+//       const result = await UserModel.findOne(filterCondition).select("cart");
+//       if (result) {
+//         let cart = result.cart;
+//         let idx = cart.findIndex((cartItem) => cartItem == itemID);
+//         if (idx != -1) {
+//           cart.splice(idx, 1);
+//         } else {
+//           return null;
+//         }
+//         const updateCondition = { cart };
+//         try {
+//           const result = await UserModel.findOneAndUpdate(
+//             filterCondition,
+//             updateCondition,
+//             { new: true }
+//           ).select("cart");
+//           if (result) {
+//             console.log("the final cart is", result.cart);
+//             return result;
+//           } else {
+//             return null;
+//           }
+//         } catch (error) {
+//           console.log(err);
+//           throw new Error(
+//             "Some unexpected error occurred in the inner loop while updating cart in userService.decrementCartItemQuantity"
+//           );
+//         }
+//       } else {
+//         return null;
+//       }
+//     } catch (err) {
+//       console.log(err);
+//       throw new Error(
+//         "Some unexpected error occurred while updating cart in userService.decrementCartItemQuantity"
+//       );
+//     }
+//   }
 
-  static async removeCartItems({ userID, itemID }) {
-    try {
-      const filterCondition = { _id: userID };
-      const updateCondition = { cart: itemID };
-      const result = await UserModel.findOneAndUpdate(
-        filterCondition,
-        {
-          $pull: updateCondition,
-        },
-        { new: true }
-      ).select("cart");
-      console.log("the result is", result);
-      if (result) {
-        return result;
-      } else {
-        return null;
-      }
-    } catch (err) {
-      console.log(err);
-      throw new Error(
-        "Some unexpected error occurred while updating user in userService.removeFavourites"
-      );
-    }
-  }
+//   static async removeCartItems({ userID, itemID }) {
+//     try {
+//       const filterCondition = { _id: userID };
+//       const updateCondition = { cart: itemID };
+//       const result = await UserModel.findOneAndUpdate(
+//         filterCondition,
+//         {
+//           $pull: updateCondition,
+//         },
+//         { new: true }
+//       ).select("cart");
+//       console.log("the result is", result);
+//       if (result) {
+//         return result;
+//       } else {
+//         return null;
+//       }
+//     } catch (err) {
+//       console.log(err);
+//       throw new Error(
+//         "Some unexpected error occurred while updating user in userService.removeFavourites"
+//       );
+//     }
+//   }
 
-  static async getCategories({ userID }) {
-    const query = { _id: userID };
-    const itemObj = { categoriesFound: false };
-    try {
-      const result = await UserModel.findById(query).select(
-        "userDefinedCategories"
-      );
-      if (result) {
-        itemObj.categoriesFound = true;
-        itemObj.userDefinedCategories = result.userDefinedCategories;
-      }
-      return itemObj;
-    } catch (error) {
-      console.log(
-        `Could not fetch the user in userService getCategories and the error is ${error}`
-      );
-      return itemObj;
-    }
-  }
+//   static async getCategories({ userID }) {
+//     const query = { _id: userID };
+//     const itemObj = { categoriesFound: false };
+//     try {
+//       const result = await UserModel.findById(query).select(
+//         "userDefinedCategories"
+//       );
+//       if (result) {
+//         itemObj.categoriesFound = true;
+//         itemObj.userDefinedCategories = result.userDefinedCategories;
+//       }
+//       return itemObj;
+//     } catch (error) {
+//       console.log(
+//         `Could not fetch the user in userService getCategories and the error is ${error}`
+//       );
+//       return itemObj;
+//     }
+//   }
 
-  static async addUserDefinedCategories({ userID, category }) {
-    try {
-      const filterCondition = { _id: userID };
-      const updateCondition = { userDefinedCategories: category };
-      console.log(updateCondition);
-      const result = await UserModel.findOneAndUpdate(
-        filterCondition,
-        { $addToSet: updateCondition },
-        { new: true }
-      ).select("userDefinedCategories");
-      console.log("the result is", result);
-      if (result) {
-        return result;
-      } else {
-        return null;
-      }
-    } catch (err) {
-      console.log(err);
-      throw new Error(
-        "Some unexpected error occurred while updating user in userService.addUserDefinedCategories"
-      );
-    }
-  }
+//   static async addUserDefinedCategories({ userID, category }) {
+//     try {
+//       const filterCondition = { _id: userID };
+//       const updateCondition = { userDefinedCategories: category };
+//       console.log(updateCondition);
+//       const result = await UserModel.findOneAndUpdate(
+//         filterCondition,
+//         { $addToSet: updateCondition },
+//         { new: true }
+//       ).select("userDefinedCategories");
+//       console.log("the result is", result);
+//       if (result) {
+//         return result;
+//       } else {
+//         return null;
+//       }
+//     } catch (err) {
+//       console.log(err);
+//       throw new Error(
+//         "Some unexpected error occurred while updating user in userService.addUserDefinedCategories"
+//       );
+//     }
+//   }
 
-  static async getUserbyParameter(param, val) {
-    const query = { [param]: val };
-    console.log(query);
-    let userObj = {};
-    return new Promise(function(resolve, reject) {
-      UserModel.findOne(query)
-        .then((res) => {
-          if (res) {
-            userObj = res;
-            console.log("INSIDE GET USER", userObj);
-            resolve(userObj);
-          } else {
-            reject("User does NOT exist with shopName " + val);
-          }
-        })
-        .catch((err) => {
-          throw err;
-        });
-    });
-  }
-};
+//   static async getUserbyParameter(param, val) {
+//     const query = { [param]: val };
+//     console.log(query);
+//     let userObj = {};
+//     return new Promise(function(resolve, reject) {
+//       UserModel.findOne(query)
+//         .then((res) => {
+//           if (res) {
+//             userObj = res;
+//             console.log("INSIDE GET USER", userObj);
+//             resolve(userObj);
+//           } else {
+//             reject("User does NOT exist with shopName " + val);
+//           }
+//         })
+//         .catch((err) => {
+//           throw err;
+//         });
+//     });
+//   }
+// };
