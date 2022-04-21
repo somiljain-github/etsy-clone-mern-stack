@@ -32,7 +32,7 @@ module.exports = class RegisterController {
             console.error(err);
             res.json({
               status: "Error",
-              msg: "System error, try again",
+              message: "System error, try again",
             });
           } else {
             if (!unique) {
@@ -62,7 +62,7 @@ module.exports = class RegisterController {
                     console.error(error);
                     res.json({
                       status: "Error",
-                      msg: "System error, try again",
+                      message: "System error, try again",
                     });
                   } else {
                     const user = JSON.parse(JSON.stringify(userObj));
@@ -78,6 +78,7 @@ module.exports = class RegisterController {
                       isUserUnique: true,
                       insertSuccessful: true,
                       user: user,
+                      message: "User created",
                     });
                   }
                 }
@@ -90,7 +91,11 @@ module.exports = class RegisterController {
           "some error occured in registerController.js and the error is",
           error
         );
-        res.status(500).json({ error: error });
+        res.status(500).json({
+          error,
+          message:
+            "There was an error in registering backend. Please try again",
+        });
       }
     }
   }

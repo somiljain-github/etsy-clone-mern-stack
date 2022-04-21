@@ -13,7 +13,7 @@ module.exports = class itemController {
     const userID = req.params.userId;
     const queryVal = { $ne: [userID] };
     if (!userID) {
-      return res.status(400).send({
+      return resp.status(400).send({
         status: false,
         data: "UserId missing.",
       });
@@ -43,8 +43,9 @@ module.exports = class itemController {
               } else {
                 console.log(items);
                 console.log(favItems);
-                data = { items, favourites: favItems.favourites };
-                message = { function: "markFavourteItems", data: data };
+                data = { items, favIds: favItems.favourites };
+                message = { function: "markFavourteItems", data };
+                console.log("î11111@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@", message);
                 kafka.make_request(
                   "topic-item-mark-favourites",
                   message,
@@ -56,7 +57,7 @@ module.exports = class itemController {
                         msg: "System error, try again",
                       });
                     } else {
-                      res
+                      resp
                         .status(200)
                         .send(updatedItems)
                         .end();
@@ -73,7 +74,7 @@ module.exports = class itemController {
         "some error occured in loginController.js and the error is",
         error
       );
-      res.status(500).json({ error: error });
+      resp.status(500).json({ error: error });
     }
   }
 
@@ -179,7 +180,7 @@ module.exports = class itemController {
         async (err, items) => {
           if (err) {
             console.error(err);
-            resp.json({
+            res.json({
               status: "Error",
               msg: "System error, try again",
             });

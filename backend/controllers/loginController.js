@@ -24,7 +24,7 @@ module.exports = class LoginController {
       kafka.make_request("topic-login", message, async (err, userObj) => {
         if (err) {
           console.error(err);
-          resp.json({
+          res.json({
             status: "Error",
             msg: "System error, try again",
           });
