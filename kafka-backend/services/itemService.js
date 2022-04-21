@@ -26,7 +26,8 @@ class ItemService {
 
   static async getItemsbyParamter({ param, val }, callback) {
     const query = { [param]: val };
-    console.log(query);
+    // const query = { userID: "625f849c8fb5cea7f52894e5" };
+    console.log("the query in getItemsbyParameter is", query);
     let itemObj = {};
     return new Promise(function (_resolve, _reject) {
       ITEM.find(query)
@@ -35,7 +36,7 @@ class ItemService {
           if (res) {
             console.log(res.length, "ITEMS LOADED");
             itemObj = res;
-
+            console.log("the items found are", itemObj);
             callback(null, itemObj);
           } else {
             callback(null, "Item NOT loaded. Result: " + res);
