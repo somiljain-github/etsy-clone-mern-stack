@@ -8,9 +8,10 @@ const multer = require("multer");
 const upload = multer({ dest: "../uploads/" });
 
 router.get(
-  "/getAll/:userId",
+  "/getAll/:userID",
   passport.authenticate("jwt", { session: false }),
-  controller.getAll
+  // controller.getAll
+  controller.getAllItems
 );
 router.get(
   "/search/:search?",

@@ -78,6 +78,40 @@ module.exports = class itemController {
     }
   }
 
+  static async getAllItems(req, resp) {
+    const userID = req.params.userID;
+    const queryVal = { $ne: [userID] };
+    if (!userID) {
+      return resp.status(400).send({
+        status: false,
+        data: "UserId missing.",
+      });
+    }
+    let data = { param: ITEMMODEL.userID, val: queryVal, userID };
+    try {
+      let message = { function: "getAllItems", data };
+      kafka.make_request("topic-item-get-all-items", message, (err, items) => {
+        if (err) {
+          console.error(err);
+          resp.json({
+            status: "Error",
+            msg: "System error, try again",
+          });
+        } else {
+          if (items) {
+            resp.status(200).send(items);
+          }
+        }
+      });
+    } catch {
+      console.log(
+        "some error occured in getAllItems.js and the error is",
+        error
+      );
+      resp.status(500).json({ error: error });
+    }
+  }
+
   static async getItem(req, res) {
     try {
       const itemId = req.params.itemId;

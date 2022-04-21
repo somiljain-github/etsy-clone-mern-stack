@@ -150,6 +150,13 @@ module.exports = class UserController {
     const userParamsObj = { userID: req.params.userID };
     userParamsObj.itemID = req.body.itemID;
     const response = {};
+    if (!(userParamsObj.itemID && userParamsObj.userID)) {
+      response.success = false;
+      response.status = 404;
+      response.message = "itemID and userID, both are required";
+      resp.status(response.status).send(response);
+    }
+
     try {
       let message = { function: "addFavourites", data: userParamsObj };
       kafka.make_request("topic-add-favourites", message, (err, result) => {
