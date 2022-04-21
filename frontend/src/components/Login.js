@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { constants } from "../config/config";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { loginUser } from "../redux/actions";
 
-function Login({ user, loginUser }) {
+function Login({ user }) {
   const [loginDetails, setDetails] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
@@ -42,15 +42,14 @@ function Login({ user, loginUser }) {
           const token = response.data.token;
           const emailID = response.data.user.emailID;
           const userID = response.data.user._id;
-
-          if (response.data.shopid !== null) {
-            const shopid = response.data.shopid;
-            window.localStorage.setItem("shopid", shopid);
+          const shopName = response.data.user.shopName;
+          if (shopName !== undefined) {
+            window.localStorage.setItem("shopName", shopName);
           }
           window.localStorage.setItem("token", token);
           window.localStorage.setItem("emailID", emailID);
           window.localStorage.setItem("userID", userID);
-          loginUser(response.data.email_id);
+          loginUser(emailID);
           navigate("/home");
         }
       })

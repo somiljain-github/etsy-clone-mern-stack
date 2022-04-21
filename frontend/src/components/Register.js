@@ -34,7 +34,7 @@ function Register({ user, loginUser }) {
 
     const data = {
       name: loginDetails.name,
-      email: loginDetails.email,
+      emailID: loginDetails.email,
       password: loginDetails.password,
     };
     console.log(data);
@@ -43,13 +43,12 @@ function Register({ user, loginUser }) {
       .then((response) => {
         if (response.data.status === 201) {
           const token = response.data.token;
-          const email_id = response.data.email_id;
-          const userid = response.data.userid;
+          const emailID = response.data.user.emailID;
+          const userid = response.data.user._id;
           window.localStorage.setItem("token", token);
-          window.localStorage.setItem("email_id", email_id);
+          window.localStorage.setItem("emailID", emailID);
           window.localStorage.setItem("userid", userid);
-          console.log(response.data.email_id);
-          loginUser(response.data.email_id);
+          loginUser(emailID);
           navigate("/home");
         } else if (response.data.code === 400) {
           console.log(response.data.message);
@@ -57,9 +56,7 @@ function Register({ user, loginUser }) {
         }
       })
       .catch((err) => {
-        console.log("error register");
-        console.log(err);
-        setMessage("The email is already reigstered");
+        setMessage(err.response.data.message);
       });
   };
 
