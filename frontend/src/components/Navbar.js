@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { constants } from "../config/config";
 import authHeader from "../services/authHeader";
-import "./NavBar.css";
+import "../styles/NavBar.css";
 import { ReactComponent as Logo } from "../images/etsy-vector-logo.svg";
 import { ReactComponent as SearchIcon } from "../images/SearchIcon.svg";
 import { ReactComponent as FavouritesIcon } from "../images/FavouritesIcon.svg";
@@ -107,13 +107,7 @@ function Navbar({ items }) {
           </Link>
         </div>
         <div className="navBarIcon">
-          {localStorage.getItem("shopName") ? (
-            <Link to="/shophome">Shop</Link>
-          ) : (
-            <Link to="/createShop">
-              <ShopIcon />
-            </Link>
-          )}
+          {localStorage.getItem("shopName") ? (<Link to="/shophome"><ShopIcon /></Link>) : (<Link to="/createShop"><ShopIcon /></Link>)}
         </div>
 
         <div className="navBarIcon">

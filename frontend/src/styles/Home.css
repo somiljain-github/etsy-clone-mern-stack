@@ -28,7 +28,9 @@ main {
 
 .cards {
   grid-column: 2 / span 12;
-  display: grid;
+  /* display: grid; */
+  display: flex;
+  flex-wrap: wrap;
   grid-template-columns: repeat(12, minmax(auto, 60px));
   grid-gap: 40px;
 }
@@ -50,9 +52,9 @@ main {
 .card:hover {
   transform: translateY(-7px);
   grid-column-end: span 4;
-  height: 450px;
-  width: 260px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); 
+  height: 300px;
+  width: 200px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
 .card__image-container {
@@ -91,7 +93,7 @@ main {
   border-radius: 20px;
 }
 
-.favouriteIcon{
+.favouriteIcon {
   height: 24px;
   width: 24px;
   margin: 0px 20px 0px 0px;
@@ -107,6 +109,7 @@ main {
   main {
     grid-gap: 20px;
   }
+
   .card {
     grid-column-end: span 12;
   }
@@ -117,11 +120,13 @@ main {
     grid-template-columns: 10px repeat(6, 1fr) 10px;
     grid-gap: 10px;
   }
+
   .cards {
     grid-column: 2 / span 6;
     grid-template-columns: repeat(6, 1fr);
     grid-gap: 20px;
   }
+
   .card {
     grid-column-end: span 6;
   }
@@ -129,8 +134,7 @@ main {
 
 .heart {
   width: 30px;
-  background: radial-gradient(circle at 60% 65%, red 64%, transparent 65%) top
-      left,
+  background: radial-gradient(circle at 60% 65%, red 64%, transparent 65%) top left,
     radial-gradient(circle at 40% 65%, red 64%, transparent 65%) top right,
     linear-gradient(to bottom left, red 43%, transparent 43%) bottom left,
     linear-gradient(to bottom right, red 43%, transparent 43%) bottom right;
@@ -138,6 +142,7 @@ main {
   background-repeat: no-repeat;
   display: inline-block;
 }
+
 .heart::before {
   content: "";
   display: block;
