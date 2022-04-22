@@ -1,9 +1,10 @@
-import { LOG_IN, LOG_OUT, SET_ITEMS } from "./action-types.js";
+import { LOG_IN, LOG_OUT, SET_ITEMS, GET_CURRENCIES } from "./action-types.js";
 
 const initialState = {
   user: {},
   dummyData: "dummy string",
   items: [],
+  currencies: [],
 };
 function rootReducer(state = initialState, action) {
   //==========================LOG_IN==========================
@@ -30,15 +31,12 @@ function rootReducer(state = initialState, action) {
       " and the current state is ",
       state
     );
-    const updated_state = Object.assign({}, state, {
-      user: {},
-    });
-    console.log("the updated state is ", updated_state);
-    return updated_state;
+    console.log("the updated state is ", initialState);
+    return initialState;
   }
   //==========================SET_ITEMS==========================
   if (action.type === SET_ITEMS) {
-    console.log("setting items...");
+    console.log("setting items in the rootReducer...");
     console.log(
       "the payload is ",
       action.payload,
@@ -47,6 +45,21 @@ function rootReducer(state = initialState, action) {
     );
     const updated_state = Object.assign({}, state, {
       items: action.payload,
+    });
+    console.log("the updated state is ", updated_state);
+    return updated_state;
+  }
+  //==========================GET_CURRENCIES==========================
+  if (action.type === GET_CURRENCIES) {
+    console.log("setting items in the rootReducer...");
+    console.log(
+      "the payload is ",
+      action.payload,
+      " and the current state is ",
+      state
+    );
+    const updated_state = Object.assign({}, state, {
+      currencies: action.payload,
     });
     console.log("the updated state is ", updated_state);
     return updated_state;

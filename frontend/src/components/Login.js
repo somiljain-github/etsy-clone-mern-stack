@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { constants } from "../config/config";
-import { connect, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginUser } from "../redux/actions";
 
 function Login({ user }) {
   const [loginDetails, setDetails] = useState({ email: "", password: "" });
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
 
@@ -17,13 +18,14 @@ function Login({ user }) {
     });
   };
 
-  const fetchToken = async () => {
+  // const fetchToken = async () => {
+  //   const token = await localStorage.getItem("token");
+  //   if (token) navigate("/home", { replace: true });
+  // };
+
+  useEffect(async () => {
     const token = await localStorage.getItem("token");
     if (token) navigate("/home", { replace: true });
-  };
-
-  useEffect(() => {
-    fetchToken();
   }, []);
 
   const handleSubmit = (e) => {
@@ -46,10 +48,12 @@ function Login({ user }) {
           if (shopName !== undefined) {
             window.localStorage.setItem("shopName", shopName);
           }
+          const userObj = { ...response.data.user, token: response.data.token };
+          dispatch(loginUser(userObj));
           window.localStorage.setItem("token", token);
           window.localStorage.setItem("emailID", emailID);
           window.localStorage.setItem("userID", userID);
-          loginUser(emailID);
+          // loginUser(emailID);
           navigate("/home");
         }
       })
@@ -110,14 +114,15 @@ function Login({ user }) {
     </div>
   );
 }
-const mapStateToProps = (state) => {
-  return { user: state.user };
-};
+// const mapStateToProps = (state) => {
+//   return { user: state.user };
+// };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    loginUser: (user) => dispatch(loginUser(user)),
-  };
-}
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     loginUser: (user) => dispatch(loginUser(user)),
+//   };
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+// export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;

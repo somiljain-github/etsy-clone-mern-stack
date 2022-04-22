@@ -1,0 +1,33 @@
+/*To Make it look nice*/
+.para {
+    float: left;
+    font-family: Cambria;
+    /*To make it so when the browser is small The font changes!*/
+    font-size: 2vw;
+    color: grey;
+  }
+  /*For the hover effect*/
+  .para:hover {
+    font-family: Cambria;
+    color: white;
+  }
+  /*To Make it look nice and for positioning*/
+  .Footer {
+    display: flex;
+    justify-content: center;
+    background-color: black;
+  }
+  /* To get rid of the margins */
+  .mainbody {
+    margin: 0;
+  }
+  /*To Make it look nice*/
+  .anchor {
+    text-decoration: none;
+    color: grey;
+  }
+  /*For the hover effect*/
+  .anchor:hover {
+    color: white;
+  }
+  

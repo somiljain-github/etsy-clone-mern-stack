@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { constants } from "../config/config";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginUser } from "../redux/actions";
 
-function Register({ user, loginUser }) {
+function Register({ user }) {
   const [loginDetails, setDetails] = useState({
     name: "",
     email: "",
     password: "",
   });
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [message, setMessage] = useState("");
@@ -47,8 +48,10 @@ function Register({ user, loginUser }) {
           const userid = response.data.user._id;
           window.localStorage.setItem("token", token);
           window.localStorage.setItem("emailID", emailID);
-          window.localStorage.setItem("userid", userid);
-          loginUser(emailID);
+          window.localStorage.setItem("userID", userid);
+          const userObj = { ...response.data.user, token: response.data.token };
+          // console.log("--------the data is", userObj);
+          dispatch(loginUser(userObj));
           navigate("/home");
         } else if (response.data.code === 400) {
           console.log(response.data.message);
@@ -124,14 +127,15 @@ function Register({ user, loginUser }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return { user: state.user };
-};
+// const mapStateToProps = (state) => {
+//   return { user: state.user };
+// };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    loginUser: (user) => dispatch(loginUser(user)),
-  };
-}
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     loginUser: (user) => dispatch(loginUser(user)),
+//   };
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+// export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default Register;

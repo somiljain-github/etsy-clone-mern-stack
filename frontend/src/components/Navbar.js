@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { constants } from "../config/config";
@@ -12,10 +12,11 @@ import { ReactComponent as AccountProfileIcon } from "../images/AccountProfileIc
 import { ReactComponent as LogoutIcon } from "../images/LogoutIcon.svg";
 import { ReactComponent as OrderIcon } from "../images/OrderIcon.svg";
 import { ReactComponent as ShopIcon } from "../images/ShopIcon.svg";
-import { connect } from "react-redux";
-import { setItems } from "../redux/actions";
+import { connect, useDispatch } from "react-redux";
+import { logoutUser, setItems } from "../redux/actions";
 
 function Navbar({ items }) {
+  const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   let searchChangehandler = (e) => {
     setSearchQuery(e.target.value);
@@ -47,7 +48,7 @@ function Navbar({ items }) {
             "the items recieved from sending the api are are.......",
             temp_items
           );
-          setItems(temp_items);
+          dispatch(setItems(temp_items));
         } else if (response.data.code === 500) {
           console.log(response.data.message);
         }
@@ -62,10 +63,8 @@ function Navbar({ items }) {
   const logout = () => {
     console.log("logging out function...");
     localStorage.clear();
+    dispatch(logoutUser());
     navigate("/login", { replace: true });
-  };
-  const temp = () => {
-    alert("yo");
   };
 
   return (
