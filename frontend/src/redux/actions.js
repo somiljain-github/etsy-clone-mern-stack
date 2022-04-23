@@ -1,4 +1,4 @@
-import { LOG_IN, LOG_OUT, SET_ITEMS, GET_CURRENCIES } from "./action-types.js";
+import { LOG_IN, LOG_OUT, SET_ITEMS, GET_CURRENCIES, UPDATE_SHOPNAME } from "./action-types.js";
 export function loginUser(payload) {
   console.log("Dispatching in addUser...");
   return { type: LOG_IN, payload };
@@ -20,4 +20,9 @@ export function getCurrencies(currencies) {
     currencies
   );
   return { type: GET_CURRENCIES, payload: currencies };
+}
+
+export function updateShopName(shopName) {
+  console.log("Setting the shopName in redux store... and the shopName is",shopName);
+  return { type: UPDATE_SHOPNAME, payload: shopName };
 }

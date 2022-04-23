@@ -107,7 +107,7 @@ function Navbar({ items }) {
           </Link>
         </div>
         <div className="navBarIcon">
-          {localStorage.getItem("shopName") ? (<Link to="/shophome"><ShopIcon /></Link>) : (<Link to="/createShop"><ShopIcon /></Link>)}
+          {localStorage.getItem("shopName") ? (<Link to="/shophome"><ShopIcon /></Link>) : (<Link to="/createshop"><ShopIcon /></Link>)}
         </div>
 
         <div className="navBarIcon">

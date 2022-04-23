@@ -1,4 +1,4 @@
-import { LOG_IN, LOG_OUT, SET_ITEMS, GET_CURRENCIES } from "./action-types.js";
+import { LOG_IN, LOG_OUT, SET_ITEMS, GET_CURRENCIES, UPDATE_SHOPNAME } from "./action-types.js";
 
 const initialState = {
   user: {},
@@ -64,6 +64,19 @@ function rootReducer(state = initialState, action) {
     console.log("the updated state is ", updated_state);
     return updated_state;
   }
+
+  /* ----------------------------- UPDATE_SHOPNAME ---------------------------- */
+
+  if (action.type === UPDATE_SHOPNAME) {
+    console.log("Updating the user shopName in the rootReducer...");
+    console.log("the payload is ",action.payload," and the current state is ",state);
+    const userObj = state.user;
+    userObj.shopName = action.payload.shopName;
+    const updated_state = Object.assign({}, state, {user: userObj});
+    console.log("the updated state is ", updated_state);
+    return updated_state;
+  }
+
   //==========================Return state by default==========================
   return state;
 }

@@ -168,7 +168,7 @@ module.exports = class ShopController {
 
   static async checkName(req, resp){
     const shopName = req.query.shopName;
-    if((!shopName) && res.headersSent !== true){
+    if((!shopName) && resp.headersSent !== true){
       return resp.status(404).send({message: "All the inputs - userID and shopName are required"});
     }
 

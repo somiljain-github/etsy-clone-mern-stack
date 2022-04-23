@@ -45,10 +45,14 @@ function Register({ user }) {
         if (response.data.status === 201) {
           const token = response.data.token;
           const emailID = response.data.user.emailID;
-          const userid = response.data.user._id;
+          const userID = response.data.user._id;
           window.localStorage.setItem("token", token);
           window.localStorage.setItem("emailID", emailID);
-          window.localStorage.setItem("userID", userid);
+          window.localStorage.setItem("userID", userID);
+          const shopName = response.data.user.shopName;
+          if (shopName !== undefined) {
+            window.localStorage.setItem("shopName", shopName);
+          }
           const userObj = { ...response.data.user, token: response.data.token };
           // console.log("--------the data is", userObj);
           dispatch(loginUser(userObj));
