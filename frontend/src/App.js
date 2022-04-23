@@ -6,7 +6,8 @@ import Register from "./components/Register";
 import Home from "./components/Home";
 import CreateShop from "./components/CreateShop";
 import ShopHome from "./components/ShopHome";
-import Favourites from "./components/Favourites"
+import Favourites from "./components/Favourites";
+import Item from "./components/Item";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route exact path="/createshop" element={<CreateShop />} />
           <Route exact path="/shophome" element={<ShopHome />} />
           <Route exact path="/favourites" element={<Favourites />} />
+          <Route exact path="/item/:itemID" element={<Item />} />
           <Route exact element={Error} />
         </Routes>
       </div>

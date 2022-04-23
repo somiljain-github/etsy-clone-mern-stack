@@ -1,0 +1,255 @@
+.parent-flex-item {
+  /* background-color: #ffff; */
+  margin-top: 250px;
+  width: 100%;
+  height: 80px;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+}
+
+.parent-flex-item .picture {
+  flex: 10%;
+  margin-top: 80px;
+  /* background-color: #ffff; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 15px;
+}
+
+.parent-flex-item .item-details {
+  margin-top: 300px;
+  margin-left: 20px;
+  flex: 80%;
+  position: relative;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  border-width: 2px;
+  border-color: #222222;
+}
+
+.item-description {
+  /* height: 128px; */
+  text-decoration: none solid rgb(34, 34, 34);
+  width: 432px;
+  word-break: break-word;
+  font: 300 26px / 32px Guardian-EgypTT, Charter, "Charter Bitstream", Cambria,
+    "Noto Serif Light", "Droid Serif", Georgia, serif;
+  margin: 0px;
+}
+
+#IMG_18 {
+  height: 300px;
+  width: 400px;
+}
+
+.price {
+  /* block-size: 36px; */
+
+  box-sizing: border-box;
+
+  height: 36px;
+
+  font: 700 28px / 36px "Graphik Webfont", -apple-system, "Helvetica Neue",
+    "Droid Sans", Arial, sans-serif;
+}
+
+.add-to-cart-button {
+  appearance: none;
+  block-size: 48px;
+  border-block-end-color: rgb(255, 255, 255);
+  border-block-end-style: none;
+  border-block-end-width: 0px;
+  border-block-start-color: rgb(255, 255, 255);
+  border-block-start-style: none;
+  border-block-start-width: 0px;
+  border-end-end-radius: 24px;
+  border-end-start-radius: 24px;
+  border-inline-end-color: rgb(255, 255, 255);
+  border-inline-end-style: none;
+  border-inline-end-width: 0px;
+  border-inline-start-color: rgb(255, 255, 255);
+  border-inline-start-style: none;
+  border-inline-start-width: 0px;
+  border-start-end-radius: 24px;
+  border-start-start-radius: 24px;
+  bottom: 0px;
+  caret-color: rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
+  column-rule-color: rgb(255, 255, 255);
+  cursor: pointer;
+  height: 48px;
+  inline-size: 432px;
+  inset-block-end: 0px;
+  inset-block-start: 0px;
+  inset-inline-end: 0px;
+  inset-inline-start: 0px;
+  left: 0px;
+  min-block-size: 48px;
+  min-height: 48px;
+  min-inline-size: 48px;
+  min-width: 48px;
+  padding-block-end: 12px;
+  padding-block-start: 12px;
+  padding-inline-end: 18px;
+  padding-inline-start: 18px;
+  perspective-origin: 216px 24px;
+  position: relative;
+  right: 0px;
+  text-decoration: none solid rgb(255, 255, 255);
+  text-emphasis-color: rgb(255, 255, 255);
+  text-size-adjust: 100%;
+  top: 0px;
+  transform-origin: 216px 24px;
+  vertical-align: middle;
+  width: 432px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+  border: 0px none rgb(255, 255, 255);
+  border-radius: 24px;
+  font: 700 16px / 24px "Graphik Webfont", -apple-system, "Helvetica Neue",
+    "Droid Sans", Arial, sans-serif;
+  outline: rgb(255, 255, 255) none 0px;
+  padding: 12px 18px;
+}
+
+.add-to-cart-button:after {
+  block-size: 48px;
+  border-block-end-color: rgb(34, 34, 34);
+  border-block-end-style: solid;
+  border-block-end-width: 2px;
+  border-block-start-color: rgb(34, 34, 34);
+  border-block-start-style: solid;
+  border-block-start-width: 2px;
+  border-end-end-radius: 24px;
+  border-end-start-radius: 24px;
+  border-inline-end-color: rgb(34, 34, 34);
+  border-inline-end-style: solid;
+  border-inline-end-width: 2px;
+  border-inline-start-color: rgb(34, 34, 34);
+  border-inline-start-style: solid;
+  border-inline-start-width: 2px;
+  border-start-end-radius: 24px;
+  border-start-start-radius: 24px;
+  bottom: 0px;
+  box-sizing: border-box;
+  content: "";
+  cursor: pointer;
+  display: block;
+  inline-size: 432px;
+  position: absolute;
+  z-index: -1;
+  background: rgb(34, 34, 34) none repeat scroll 0% 0% / auto padding-box border-box;
+  border: 2px solid rgb(34, 34, 34);
+  border-radius: 24px;
+}
+
+.add-to-favourites-button {
+  appearance: none;
+  block-size: 48px;
+  border-block-end-color: rgb(255, 255, 255);
+  border-block-end-style: none;
+  border-block-end-width: 0px;
+  border-block-start-color: rgb(255, 255, 255);
+  border-block-start-style: none;
+  border-block-start-width: 0px;
+  border-end-end-radius: 24px;
+  border-end-start-radius: 24px;
+  border-inline-end-color: rgb(255, 255, 255);
+  border-inline-end-style: none;
+  border-inline-end-width: 0px;
+  border-inline-start-color: rgb(255, 255, 255);
+  border-inline-start-style: none;
+  border-inline-start-width: 0px;
+  border-start-end-radius: 24px;
+  border-start-start-radius: 24px;
+  bottom: 0px;
+  caret-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  column-rule-color: rgb(255, 255, 255);
+  cursor: pointer;
+  height: 48px;
+  inline-size: 432px;
+  inset-block-end: 0px;
+  inset-block-start: 0px;
+  inset-inline-end: 0px;
+  inset-inline-start: 0px;
+  left: 0px;
+  min-block-size: 48px;
+  min-height: 48px;
+  min-inline-size: 48px;
+  min-width: 48px;
+  padding-block-end: 12px;
+  padding-block-start: 12px;
+  padding-inline-end: 18px;
+  padding-inline-start: 18px;
+  perspective-origin: 216px 24px;
+  position: relative;
+  right: 0px;
+  text-decoration: none solid rgb(255, 255, 255);
+  text-emphasis-color: rgb(255, 255, 255);
+  text-size-adjust: 100%;
+  top: 0px;
+  transform-origin: 216px 24px;
+  vertical-align: middle;
+  width: 432px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+  border: 0px none rgb(255, 255, 255);
+  border-radius: 24px;
+  font: 700 16px / 24px "Graphik Webfont", -apple-system, "Helvetica Neue",
+    "Droid Sans", Arial, sans-serif;
+  outline: rgb(255, 255, 255) none 0px;
+  padding: 12px 18px;
+}
+
+/*.add-to-favourites-button*/
+
+.add-to-favourites-button:after {
+  block-size: 48px;
+  border-block-end-color: rgb(34, 34, 34);
+  border-block-end-style: solid;
+  border-block-end-width: 2px;
+  border-block-start-color: rgb(34, 34, 34);
+  border-block-start-style: solid;
+  border-block-start-width: 2px;
+  border-end-end-radius: 24px;
+  border-end-start-radius: 24px;
+  border-inline-end-color: rgb(34, 34, 34);
+  border-inline-end-style: solid;
+  border-inline-end-width: 2px;
+  border-inline-start-color: rgb(34, 34, 34);
+  border-inline-start-style: solid;
+  border-inline-start-width: 2px;
+  border-start-end-radius: 24px;
+  border-start-start-radius: 24px;
+  bottom: 0px;
+  box-sizing: border-box;
+  content: "";
+  cursor: pointer;
+  display: block;
+  inline-size: 432px;
+  position: absolute;
+  z-index: -1;
+  background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box;
+  border: 2px solid rgb(34, 34, 34);
+  border-radius: 24px;
+  margin-top: 10px;
+}
+
+/*.add-to-favourites-button:after*/
+
+.wrapper-to-align-buttons {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+  width: auto;
+}
+
+.homeitem_picture {
+  width: 14rem;
+  height: 13rem;
+}
