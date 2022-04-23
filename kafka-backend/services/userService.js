@@ -132,7 +132,7 @@ class UserService {
         callback(null, null);
       }
     } catch (err) {
-      console.log(err);
+      console.log("-------The error in userService.addFavourites is", err);
       throw new Error(
         "Some unexpected error occurred while updating user in userService.addFavourites"
       );

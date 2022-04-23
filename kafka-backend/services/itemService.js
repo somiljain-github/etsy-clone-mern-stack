@@ -1,4 +1,5 @@
 const ITEM = require("../db/models/itemModel");
+const USER = require("../db/models/userModel");
 
 class ItemService {
   static async addItem(data, callback) {
@@ -58,9 +59,56 @@ class ItemService {
     });
     callback(null, items);
   }
+
+  static async getAllItems({ param, val, userID }, callback) {
+    const query = { [param]: val };
+    let items = {},
+      favIds = {};
+    try {
+      items = await ITEM.find(query).lean();
+      // console.log(items);
+    } catch (error) {
+      console.log(
+        "Facing an error in ItemService.getAllItems with an error as",
+        error
+      );
+      callback(null, null);
+    }
+
+    try {
+      const query1 = { _id: userID };
+      const result = await USER.findById(query1).select("favourites");
+      if (result) {
+        favIds = result.favourites;
+      }
+    } catch (error) {
+      console.log(
+        `Could not fetch the favourites in itemService.getAllItems while getting favourites ${error}`
+      );
+      callback(null, null);
+    }
+
+    try {
+      items.forEach((item, _index) => {
+        const found = favIds.some((id) => {
+          return id === item._id;
+        });
+        item.favourited = found ? true : false;
+      });
+
+      callback(null, items);
+    } catch (error) {
+      console.log(
+        `Could not fetch the favourites in itemService.getAllItems while marking favourites and the error is:- ${error}`
+      );
+      callback(null, null);
+    }
+    callback(null, null);
+  }
 }
 
 function handle_request(msg, callback) {
+  console.log("the message in handle_request is", msg);
   if (msg.function === "addItem") {
     ItemService.addItem(msg.data, callback);
   } else if (msg.function === "updateItem") {
@@ -69,6 +117,8 @@ function handle_request(msg, callback) {
     ItemService.getItemsbyParamter(msg.data, callback);
   } else if (msg.function === "markFavourteItems") {
     ItemService.markFavourteItems(msg.data, callback);
+  } else if (msg.function === "getAllItems") {
+    ItemService.getAllItems(msg.data, callback);
   }
 }
 

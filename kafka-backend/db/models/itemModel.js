@@ -8,7 +8,7 @@ let itemSchema = new Schema({
   category: { type: String },
   description: { type: String },
   quantity: { type: Number },
-  salesCount: { type: Number },
+  salesCount: { type: Number, default: 0 },
   // shopName: { type: Object, ref: "user", field: "shopName" },
   userID: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
 });

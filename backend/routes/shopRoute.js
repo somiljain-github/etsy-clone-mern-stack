@@ -12,6 +12,13 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   controller.createShop
 );
+
+router.get(
+  "/namecheck/",
+  passport.authenticate("jwt", { session: false }),
+  controller.checkName
+);
+
 router.post(
   "/addItem",
   passport.authenticate("jwt", { session: false }),

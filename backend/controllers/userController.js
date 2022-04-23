@@ -150,7 +150,7 @@ module.exports = class UserController {
     const userParamsObj = { userID: req.params.userID };
     userParamsObj.itemID = req.body.itemID;
     const response = {};
-    if (!(userParamsObj.itemID && userParamsObj.userID)) {
+    if (!(userParamsObj.itemID && userParamsObj.userID) && !resp.headersSent) {
       response.success = false;
       response.status = 404;
       response.message = "itemID and userID, both are required";

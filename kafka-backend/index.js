@@ -111,6 +111,9 @@ handleTopicRequest("topic-get-categories", UserService);
 handleTopicRequest("topic-login", LoginService);
 
 handleTopicRequest("topic-shop-exists", ShopService);
+handleTopicRequest("topic-check-shopName-unique", ShopService);
+
+
 handleTopicRequest("topic-shop-add-item", ItemService);
 handleTopicRequest("topic-shop-update-item", UserService);
 handleTopicRequest("topic-shop-get-user-details", UserService);

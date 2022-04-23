@@ -8,7 +8,7 @@ let userSchema = new Schema({
   dob: { type: Date },
   gender: { type: String },
   profilePicture: { type: String },
-  country: { type: String },
+  country: { type: String, default: "United States" },
   city: { type: String },
   address: { type: String },
   about: { type: String },

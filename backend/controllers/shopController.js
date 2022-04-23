@@ -9,8 +9,8 @@ const MODELS = constants.models;
 module.exports = class ShopController {
   //check if shop exists, if not create shop
   static async createShop(req, res) {
-    let { shopName, id } = req.body;
-    let data = { shopName, userID: id };
+    let { shopName, userID } = req.body;
+    let data = { shopName, userID: userID };
     try {
       let message = { function: "addShop", data };
       kafka.make_request("topic-shop-exists", message, async (err, result) => {
@@ -164,4 +164,39 @@ module.exports = class ShopController {
       res.send(500);
     }
   }
+
+
+  static async checkName(req, resp){
+    const shopName = req.query.shopName;
+    if((!shopName) && res.headersSent !== true){
+      return resp.status(404).send({message: "All the inputs - userID and shopName are required"});
+    }
+
+    try {
+      const data = { shopName }
+      let message = { function: "checkName", data: data };
+      console.log("the message is", message);
+      kafka.make_request("topic-check-shopName-unique",message,
+        async (err, response) => {
+          if (err) {
+            console.error(err);
+            resp.json({status: "Error", message: "System error, try again"});
+          } else {
+            if(!response){
+              let msg = "the response object recived in itemController.checkName is" + response;
+              console.log(msg);
+              resp.status(404).send({message: msg});
+            } else {
+              response.status = 200;
+              resp.status(response.status).send(response);
+            }
+          }
+        })
+    } catch (error) {
+      resp.statusMessage = "Something went wrong. Details: " + e;
+      resp.send(500);
+    }
+  }
+
+
 };

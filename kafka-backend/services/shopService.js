@@ -48,12 +48,39 @@ class ShopService {
       }
     }
   }
+
+  static async checkName({shopName}, callback){
+    const response = {
+      success: false,
+      isShopNameUnique: false,
+    };
+    /**
+     * shopPresent return true if the shopName already exists
+     */
+    const query = { shopName };
+    try {
+      const result = await USER.find({ shopName }).exec();
+      response.success = true;
+      if (result.length > 0) {
+        callback(null, response);
+      } else {
+        response.isShopNameUnique = true;
+        callback(null, response);
+      }
+    } catch (error) {
+      console.log("There was an error in shopService.checkName and the error is", error);
+      callback(null, null);
+    }
+
+  }
 }
 
 function handle_request(msg, callback) {
   if (msg.function === "addShop") {
     console.log("calling addShop");
     ShopService.addShop(msg.data, callback);
+  } else if(msg.function == "checkName"){
+    ShopService.checkName(msg.data, callback);
   }
 }
 
