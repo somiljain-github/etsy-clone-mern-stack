@@ -38,6 +38,7 @@ module.exports = class LoginController {
                 message: "The user does not exist.",
               });
             } else {
+              console.log("====================", userObj);
               console.log(
                 "The user",
                 data.emailID,

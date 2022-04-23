@@ -3,7 +3,6 @@ const ItemModel = require("../db/models/itemModel");
 const ConstantsModel = require("../db/models/constantsModel");
 
 class UserService {
-  // TODO converted to kafka
   static async getUser(data, callback) {
     console.log("in the kafka userservice...");
     const userID = data.userID;
@@ -25,6 +24,11 @@ class UserService {
         if (items && items.itemFound) {
           userObj.items = items.items;
         }
+      }
+
+      if(result.favourites.length > 0){
+        const records = await ItemModel.find().where('_id').in(result.favourites).exec();
+        userObj.favouriteItems = records;
       }
       callback(null, userObj);
     } catch (error) {
@@ -107,6 +111,11 @@ class UserService {
       if (result) {
         itemObj.favouritesFound = true;
         itemObj.favourites = result.favourites;
+      }
+
+      if(result.favourites.length > 0){
+        const records = await ItemModel.find().where('_id').in(result.favourites).exec();
+        itemObj.favouriteItems = records;
       }
       callback(null, itemObj);
     } catch (error) {

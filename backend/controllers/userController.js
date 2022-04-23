@@ -126,6 +126,7 @@ module.exports = class UserController {
           if (result && result.favouritesFound) {
             response.favouritesFound = result.favouritesFound;
             response.favourites = result.favourites;
+            response.favouriteItems = result.favouriteItems;
             response.success = true;
             response.status = "200";
             return resp.status(200).send(response);
