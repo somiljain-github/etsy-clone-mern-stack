@@ -182,6 +182,14 @@ class UserService {
       if (result) {
         itemObj.cartFound = true;
         itemObj.cart = result.cart;
+        if(result.cart.length > 0){
+          let tempCart = [...result.cart];
+          tempCart = [...new Set(tempCart)];
+          tempCart.map(itemID => itemID.toString());
+          
+          const records = await ItemModel.find().where('_id').in(tempCart).exec();
+          itemObj.cartItems = records;
+        }
       } else {
         itemObj.cartFound = false;
       }

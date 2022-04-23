@@ -242,6 +242,7 @@ module.exports = class UserController {
           if (result && result.cartFound) {
             response.cartFound = result.cartFound;
             response.cart = result.cart;
+            response.cartItems = result.cartItems;
             response.success = true;
             response.status = "200";
             return resp.status(200).send(response);

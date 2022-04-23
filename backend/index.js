@@ -14,6 +14,7 @@ const userRoute = require("./routes/userRoute");
 const shopRoute = require("./routes/shopRoute");
 const constantsRoute = require("./routes/constantsRoute");
 const itemRoute = require("./routes/itemRoute");
+const orderRoute = require("./routes/orderRoute");
 //================================start of config================================
 dotenv.config();
 
@@ -93,3 +94,4 @@ app.use("/api/v1/user", userRoute);
 app.use("/api/v1/shop", shopRoute);
 app.use("/api/v1/constants", constantsRoute);
 app.use("/api/v1/item", itemRoute);
+app.use("/api/v1/order", orderRoute);

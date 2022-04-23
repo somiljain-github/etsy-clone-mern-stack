@@ -6,6 +6,7 @@ const LoginService = require("./services/loginService");
 const UserService = require("./services/userService");
 const ShopService = require("./services/shopService");
 const ItemService = require("./services/itemService");
+const OrderService = require("./services/orderService");
 const ConstantsService = require("./services/constantsService");
 
 function handleTopicRequest(topic_name, fname) {
@@ -129,3 +130,6 @@ handleTopicRequest("topic-item-mark-favourites", ItemService);
 handleTopicRequest("topic-item-get-items-after-search", ItemService);
 handleTopicRequest("topic-item-get-items-after-filter", ItemService);
 handleTopicRequest("topic-item-get-item", ItemService);
+
+handleTopicRequest("topic-order-add-order", OrderService);
+handleTopicRequest("topic-order-get-orders", OrderService);
