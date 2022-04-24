@@ -53,7 +53,7 @@ let options = {
   wtimeoutMS: 2500,
 };
 
-mongoose.connect(localMongoURI, options, (err, res) => {
+mongoose.connect(mongoURI, options, (err, res) => {
   if (err) {
     console.log(err);
     console.log(`MongoDB Connection Failed`);
