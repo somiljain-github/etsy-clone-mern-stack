@@ -6,9 +6,9 @@ import authHeader from "../services/authHeader";
 import '../styles/Purchases.css'
 
 function Purchases() {
-  //const userID = localStorage.getItem("userID");
+  const userID = localStorage.getItem("userID");
   var [purchases, setPurchases] = useState([]);
-  const userID = '625128a2ad676dcca6e551bf';
+//   const userID = '625128a2ad676dcca6e551bf';
   const URL = `http://${constants.IP.ipAddress}:3001/api/v1/order/getOrders/${userID}`;
   console.log(URL);
 
