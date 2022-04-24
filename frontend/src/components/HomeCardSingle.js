@@ -40,9 +40,9 @@ function HomeCardSingle(props) {
     <React.Fragment key={props.itemID}>
       <div className="card">
         <div className="card__image-container">
-          <img src="https://images.unsplash.com/photo-1473283147055-e39c51463929?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1200&q=80" alt="displaying of the item"/>
+          {/* <img src="https://images.unsplash.com/photo-1473283147055-e39c51463929?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1200&q=80" alt="displaying of the item"/> */}
 
-          {/* <img src={props.picture} /> */}
+          <img src={props.displayPicture} style={{"height":"170px", "width":"170px", }} />
         </div>
         <div className="card__content">
           <Link to={itemLink}>

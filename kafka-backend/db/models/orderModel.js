@@ -14,7 +14,7 @@ let orderSchema = new Schema({
       name: { type: String},
       shopName: { type: String },
       price: { type: Number },
-      dop: { type: Date },
+      dop: { type: String },
     },
   ],
 });

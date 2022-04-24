@@ -140,7 +140,9 @@ function Purchases() {
                                                     {/* <div>{JSON.stringify(item)}</div> */}
                                                     <p>Price: {item.price}</p>
                                                     <p>Qty: {item.quantity}</p>
+                                                    <p>Date: {item.dop}</p>
                                                     <p>{item.isGiftPack ? <div><p>Gift wrapped!</p> <p className="gift-wrap-instructions">{item.instructions}</p></div>  : ''}</p>
+                                                    <p>Shop name: {item.shopName}</p>
                                                 </div>
                                                 <div className="col-md-4 item-right-box">
                                                     {/* image container */}

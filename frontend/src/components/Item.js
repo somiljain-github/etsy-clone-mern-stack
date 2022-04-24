@@ -140,15 +140,16 @@ function Item() {
         <div className="picture">
           <img
             alt="Item"
-            src="https://i.etsystatic.com/9649073/r/il/64f4bc/1303342076/il_794xN.1303342076_guda.jpg"
-            // src={item.displayPicture}
+            // src="https://i.etsystatic.com/9649073/r/il/64f4bc/1303342076/il_794xN.1303342076_guda.jpg"
+            src={item.displayPicture}
             id="IMG_18"
             // className="homeitem_picture"
           />
         </div>
         <div className="item-details">
           <div id="DIV_1" style={{"margin-top": "44rem"}}>
-            <div id="DIV_3"></div> <span id="SPAN_22">12,964 sales</span>
+            {/* <div id="DIV_3"></div> <span id="SPAN_22">12,964 sales</span> */}
+            <div id="DIV_3"></div> <span id="SPAN_22">{item.salesCount} sales</span>
             <span> | </span>
             <span>{item.shopName}</span>
             <div id="DIV_46" style={{ display: "block" }}>
