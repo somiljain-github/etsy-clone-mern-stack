@@ -75,7 +75,7 @@ typings/
 backend/.env
 backend/.env.test
 backend/Utils/keys.js
-backend/config/
+backend/
 kafka-backend/.env
 kafka-backend/.env.test
 

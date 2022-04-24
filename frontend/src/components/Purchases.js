@@ -57,7 +57,11 @@ function Purchases() {
                             <div className="col-md-8 item-left-box">
                                 {/* <div>{JSON.stringify(item)}</div> */}
                                 <p>Qty: {item.quantity}</p>
-                                <p>{item.isGiftPack ? <p>Gift wrapped!</p> : ''}</p>
+                                <p>{item.isGiftPack ? 
+                                <span><p>Gift wrapped!</p>
+                                    <p>{item.instructions !== "" ? item.instructions : ""}</p>
+                                </span> 
+                                : ''}</p>
                             </div>
                             <div className="col-md-4 item-right-box">
                                 {/* image container */}
