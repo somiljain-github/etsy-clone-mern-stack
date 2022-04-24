@@ -6,6 +6,7 @@ import Register from "./components/Register";
 import Home from "./components/Home";
 import CreateShop from "./components/CreateShop";
 import ShopHome from "./components/ShopHome";
+import Profile from "./components/Profile";
 import Favourites from "./components/Favourites";
 import Item from "./components/Item";
 import Cart from "./components/Cart";
@@ -27,6 +28,7 @@ function App() {
           <Route exact path="/item/:itemID" element={<Item />} />
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path="/purchases" element={<Purchases />} />
+          
           <Route exact element={Error} />
         </Routes>
       </div>
