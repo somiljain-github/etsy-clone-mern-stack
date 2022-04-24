@@ -9,6 +9,7 @@ import ShopHome from "./components/ShopHome";
 import Favourites from "./components/Favourites";
 import Item from "./components/Item";
 import Cart from "./components/Cart";
+import Purchases from "./components/Purchases";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route exact path="/favourites" element={<Favourites />} />
           <Route exact path="/item/:itemID" element={<Item />} />
           <Route exact path="/cart" element={<Cart />} />
+          <Route exact path="/purchases" element={<Purchases />} />
           <Route exact element={Error} />
         </Routes>
       </div>
