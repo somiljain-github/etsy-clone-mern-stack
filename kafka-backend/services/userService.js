@@ -304,6 +304,7 @@ class UserService {
               const records = await ItemModel.find().where('_id').in(tempCart).exec();
               itemObj.cartItems = records;
             }
+            console.log("################################", itemObj);
             callback(null, itemObj);
           } else {
             console.log("################################");
@@ -452,6 +453,8 @@ function handle_request(msg, callback) {
     UserService.addUserDefinedCategories(msg.data, callback);
   } else if (msg.function === "getUserbyParameter") {
     UserService.getUserbyParameter(msg.data, callback);
+  } else if (msg.function === "incrementCartItemQuantity"){
+    UserService.incrementCartItemQuantity(msg.data, callback);
   }
 }
 

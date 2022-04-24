@@ -399,6 +399,7 @@ module.exports = class UserController {
             //   response.success = true;
             //   response.status = "200";
             // } else 
+            // console.log("======================", result);
             if (result) {
               response.cart = result.cart;
               response.success = true;
