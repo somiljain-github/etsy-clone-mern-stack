@@ -14,6 +14,7 @@ function Cart() {
   const userID = localStorage.getItem("userID");
   const navigate = useNavigate();
   const cart = useSelector(state => state.user.cart);
+  const address = useSelector(state => state.user.address);
 
   const URL = `http://${constants.IP.ipAddress}:3001/api/v1/user/cart/${userID}`;
   console.log(URL);
@@ -108,6 +109,16 @@ function Cart() {
           <section>{items_list_cards}</section>
         </div>
         <hr />
+        
+        <div className="address">
+          <p className="add-label">
+            <label for="textarea" className="Subtotal">Address:</label>
+            <textarea id="textarea" rows="4" cols="25">
+              {address}
+            </textarea>
+          </p>
+        </div>
+
         <div className="checkout">
           <div className="total">
             <div>

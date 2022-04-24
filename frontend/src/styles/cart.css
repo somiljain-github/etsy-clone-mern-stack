@@ -148,6 +148,17 @@ hr {
   margin-right: 5%;
 }
 
+.address{
+  float: left;
+  margin-right: 5%;
+  width: 28%;
+  
+}
+
+.add-label *{
+  vertical-align: top;
+}
+
 .checkout {
   float: right;
   margin-right: 5%;
