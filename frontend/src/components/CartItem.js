@@ -12,6 +12,26 @@ function CartItem({itemID, name, quantity, price, setItems, setSum}) {
   /* -------------------------- increment-item-count -------------------------- */
   const incrementCount = () => {
     console.log("about to increment count for", itemID);
+    const data = { itemID };
+    axios.post(`http://localhost:3001/api/v1/user/incrementCartItemQuantity/${userID}`, data, {headers: authHeader()})
+    .then(
+      (response) => {
+        if(response.status == 200){
+          console.log("in the 200 loop for increment");
+          let s = 0;
+          const temp_items = response.data.cartItems;
+          const cart = response.data.cart;
+          dispatch(updateCart(cart));
+          temp_items.map((item) => {
+            let quantity = cart.filter(x => x === item._id).length;
+            item.quantity = quantity;
+            s = s + parseInt(quantity) * parseFloat(item.price);
+          });
+          setItems(temp_items);
+          setSum(s);
+        }
+      }
+    )
   }
   /* -------------------------- decrement-item-count -------------------------- */
   const decrementCount = () => {
@@ -22,7 +42,7 @@ function CartItem({itemID, name, quantity, price, setItems, setSum}) {
       (response) => {
         console.log(response.data);
         if(response.status == 200){
-          console.log("in the 200 loop");
+          console.log("in the 200 loop for decrement");
           let s = 0;
           const temp_items = response.data.cartItems;
           const cart = response.data.cart;

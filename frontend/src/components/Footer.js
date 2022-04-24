@@ -94,7 +94,7 @@ const Footer = ({ currency, setCurrency, countries, currencies }) => {
         <MDBContainer fluid className="text-center text-md-left">
           <MDBRow>
             <MDBCol md="4">
-              <div>{country}</div>
+              <div></div>
             </MDBCol>
             <MDBCol md="4">
               <span>
