@@ -8,11 +8,12 @@ import '../styles/Purchases.css';
 import { PaginatedList } from 'react-paginated-list';
 
 function Purchases() {
-//   const userID = localStorage.getItem("userID");
+  const userID = localStorage.getItem("userID");
   var [purchases, setPurchases] = useState([]);
   var [pageSize, setPageSize] = useState([]);
   var [i, setI] = useState([]);
-  const userID = '625128a2ad676dcca6e551bf';
+//   const userID = '625128a2ad676dcca6e551bf';
+//   const userID = '6265b530330f388a15e0926d';
   const URL = `http://${constants.IP.ipAddress}:3001/api/v1/order/getOrders/${userID}`;
   console.log(URL);
 
@@ -94,92 +95,77 @@ function Purchases() {
 //   i = 0;
 
 
-  return (
-    <div>
-        <Navbar />
-        <div className="container">
-            <div>Purchases</div>
-             <div>
-                {/* {purchase_cards} */}
+  let componentToRender = (
+      <div>
+          <Navbar />
+          <p>No Purchases!</p>
+      </div>
+  )
 
-                {/* <PaginatedList
-                    list={lmain}
-                    itemsPerPage={5}
-                    renderList={(list) => (list.map(order =>(<>{console.log(order)}<OrderTile orders={order}></OrderTile></>)))}
-                    ></PaginatedList> */}
-            </div>
+  if (purchases) {
+      console.log('Purchases not null', purchases);
+  } else {
+      console.log('Purchases null', purchases);
+  }
 
-            {/* <PaginatedList
-            list={purchases}
-            itemsPerPage={5}
-            renderList={(list) => (list.map(purchase =>(<>{JSON.stringify(purchase)}</>)))}
-            ></PaginatedList> */}
+  if (purchases) {
+    componentToRender = (
+        <div>
+            <Navbar />
+            <div className="container">
+                <div>Purchases</div>
 
-            {/* <PaginatedList
-            list={purchases}
-            itemsPerPage={5}
-            renderList={(list) => (list.map(purchase =>(<>{
-                <div className="purchase-card" key={JSON.stringify(purchase)}>
-                    <p>Purchase {i}</p>
-                    <br/>
-                    {JSON.stringify(purchase)}
-                </div>
-            }</>)))}
-            ></PaginatedList> */}
+                <Form.Select size="sm" className="sort-filter" onChange={(e)=>{setPageSize(parseInt(e.target.value))}} id="sort-homeitem" name="sort-homeitem">
+                    <option value="2">2</option>
+                    <option selected value="5">5</option>
+                    <option value="10">10</option>
+                </Form.Select>
 
+                <PaginatedList
+                    list={purchases}
+                    itemsPerPage={pageSize}
+                    renderList={(list) => (list.map(purchase =>(<>{
+                        <div className="purchase-card" key={JSON.stringify(purchase)}>
+                            <p> <span className="item_id_top_right"><b>Purchase Id:</b> {purchase._id}</span></p>
+                            <br/>
+                            {
+                                (purchase.items.map(item =>(<>
+                                {/* {console.log(item)} */}
+                                    <div className="item-card" key={JSON.stringify(item)}>
+                                        <p><span className="item-head">{item.name}</span> <span className="item_id_top_right">{item.itemID}</span></p>
 
-            
-            {/* <div className="page-size-selection">
-                {/* <Form.Select size="sm" className="sort-filter" value={sortBy} onChange={(e)=>{setSortBy(e.target.value)}} id="sort-homeitem" name="sort-homeitem">
-                  <option value="2">2</option>
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                </Form.Select> }
-                
-            </div> */}
-
-            <Form.Select size="sm" className="sort-filter" onChange={(e)=>{setPageSize(parseInt(e.target.value))}} id="sort-homeitem" name="sort-homeitem">
-                  <option value="2">2</option>
-                  <option selected value="5">5</option>
-                  <option value="10">10</option>
-            </Form.Select>
-
-            <PaginatedList
-                list={purchases}
-                itemsPerPage={pageSize}
-                renderList={(list) => (list.map(purchase =>(<>{
-                    <div className="purchase-card" key={JSON.stringify(purchase)}>
-                        <p> <span className="item_id_top_right"><b>Purchase Id:</b> {purchase._id}</span></p>
-                        <br/>
-                        {
-                            (purchase.items.map(item =>(<>
-                            {/* {console.log(item)} */}
-                                <div className="item-card" key={JSON.stringify(item)}>
-                                    <p><span className="item-head"></span> <span className="item_id_top_right">{item.itemID}</span></p>
-
-                                    <div key={JSON.stringify(item)} className="item-inner-box">
-                                        <div className="row">
-                                            <div className="col-md-8 item-left-box">
-                                                {/* <div>{JSON.stringify(item)}</div> */}
-                                                <p>Qty: {item.quantity}</p>
-                                                <p>{item.isGiftPack ? <p>Gift wrapped!</p> : ''}</p>
-                                            </div>
-                                            <div className="col-md-4 item-right-box">
-                                                {/* image container */}
-                                                {/* <p>test</p> */}
+                                        <div key={JSON.stringify(item)} className="item-inner-box">
+                                            <div className="row">
+                                                <div className="col-md-8 item-left-box">
+                                                    {/* <div>{JSON.stringify(item)}</div> */}
+                                                    <p>Price: {item.price}</p>
+                                                    <p>Qty: {item.quantity}</p>
+                                                    <p>{item.isGiftPack ? <div><p>Gift wrapped!</p> <p className="gift-wrap-instructions">{item.instructions}</p></div>  : ''}</p>
+                                                </div>
+                                                <div className="col-md-4 item-right-box">
+                                                    {/* image container */}
+                                                    {/* <p>test</p> */}
+                                                    <img src="simple-necklace-designs-in-gold-10.jpg" className="item-image" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </>)))
-                        }
-                    </div>
-                }</>)))}
-            ></PaginatedList>
-
-
+                                </>)))
+                            }
+                        </div>
+                    }</>)))}
+                ></PaginatedList>
+            </div>
         </div>
-        </div>
+    )
+  }
+
+  console.log(componentToRender);
+
+  return (
+    <div>
+        {componentToRender}
+    </div>
   )
 }
 

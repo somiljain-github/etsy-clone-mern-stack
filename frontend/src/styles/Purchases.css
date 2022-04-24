@@ -3,7 +3,7 @@
     margin: 20px;
     border-radius: 10px;
     text-align: left;
-    padding: 10px;
+    padding: 10px 10px 5px 10px;
 }
 
 .purchase-card:hover {
@@ -18,23 +18,47 @@
 
 .item-card {
     border: 1px solid grey;
-    padding: 8px;
+    padding: 8px 8px 8px 0px;
     margin-bottom: 5px;
     border-radius: 4px;
     padding-top: 10px;
 }
 
 .item-head {
-    font-size: 1.25em;
+    font-size: 1.35em;
+    margin-left: 12px;
     /* font-weight: bold; */
 }
 
 .item-left-box {
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
     /* text-overflow: ellipsis; */
     /* overflow-x: scroll; */
+    padding: 25px;
+}
+
+.item-right-box {
+    border: 1px solid grey;
 }
 
 .item-inner-box {
     margin: 0px 10px;
+}
+
+.gift-wrap-instructions {
+    margin-top: -15px;
+    /* font-style: italic; */
+    font-size: 0.8em;
+}
+
+.item-image {
+    /* background: url("https://gravatar.com/avatar/1fb57d346235fa09e5c1f35ebf4b1418?s=400&d=robohash&r=x"); */
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+    /* border-radius: 50%; */
+    height: 200px;
+    width: 250px;
+    float: right;
+    /* max-height: 5rem; */
 }
