@@ -60,7 +60,7 @@ module.exports = class orderController {
                             result
                         );
                         res.statusMessage = "ORDERS RECIEVED";
-                        res.send(result.slice(startIdx, endIdx));
+                        res.send((result));
                         res.status(200).end();
                     }
                 }
