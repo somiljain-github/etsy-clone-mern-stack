@@ -9,6 +9,7 @@
 } */
 
 .CartContainer {
+  margin-left: 13rem;
   width: 70%;
   height: 90%;
   background-color: #ffffff;
@@ -42,21 +43,25 @@
 }
 
 .Cart-Items {
-  margin: auto;
+  background-color: #F5F5F5;
+  margin: 30px;
   width: 90%;
   height: 30%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .image-box {
   width: 15%;
   text-align: center;
 }
+
 .about {
   height: 100%;
   width: 24%;
 }
+
 .title {
   padding-top: 10px;
   line-height: 10px;
@@ -65,6 +70,7 @@
   font-weight: 800;
   color: #202020;
 }
+
 .subtitle {
   line-height: 10px;
   font-size: 18px;
@@ -79,6 +85,7 @@
   justify-content: space-between;
   align-items: center;
 }
+
 /* .btn {
   width: 40px;
   height: 40px;
@@ -104,6 +111,7 @@
   height: 100%;
   text-align: right;
 }
+
 .amount {
   padding-top: 20px;
   font-size: 26px;
@@ -111,6 +119,7 @@
   font-weight: 800;
   color: #202020;
 }
+
 .save {
   padding-top: 5px;
   font-size: 14px;
@@ -119,6 +128,7 @@
   color: #1687d9;
   cursor: pointer;
 }
+
 .remove {
   padding-top: 5px;
   font-size: 14px;
@@ -137,22 +147,26 @@ hr {
   float: right;
   margin-right: 5%;
 }
+
 .checkout {
   float: right;
   margin-right: 5%;
   width: 28%;
 }
+
 .total {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
+
 .Subtotal {
   font-size: 22px;
   font-family: "Open Sans";
   font-weight: 700;
   color: #202020;
 }
+
 .items {
   font-size: 16px;
   font-family: "Open Sans";
@@ -160,12 +174,14 @@ hr {
   color: #909090;
   line-height: 10px;
 }
+
 .total-amount {
   font-size: 36px;
   font-family: "Open Sans";
   font-weight: 900;
   color: #202020;
 }
+
 .button {
   margin-top: 10px;
   width: 100%;

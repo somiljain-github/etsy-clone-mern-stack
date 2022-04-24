@@ -1,14 +1,17 @@
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import "../styles/cart.css";
 import authHeader from "../services/authHeader";
 import { updateCart } from "../redux/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { Form } from 'react-bootstrap';
+import "../styles/cartItem.css"
 
-function CartItem({itemID, name, quantity, price, setItems, setSum}) {
+function CartItem({itemID, name, quantity, price, items, setItems, setSum}) {
   const userID = localStorage.getItem("userID");
   const dispatch = useDispatch();
-  // const cart = useSelector(state => state.user.cart);
+  const [isGiftPack, setGiftPack] = useState(false);
+  const [instructions, setInstructions] = useState("");
   /* -------------------------- increment-item-count -------------------------- */
   const incrementCount = () => {
     console.log("about to increment count for", itemID);
@@ -33,6 +36,8 @@ function CartItem({itemID, name, quantity, price, setItems, setSum}) {
       }
     )
   }
+  /* -------------------------------------------------------------------------- */
+  
   /* -------------------------- decrement-item-count -------------------------- */
   const decrementCount = () => {
     const data = { itemID };
@@ -51,7 +56,6 @@ function CartItem({itemID, name, quantity, price, setItems, setSum}) {
             let quantity = cart.filter(x => x === item._id).length;
             item.quantity = quantity;
             s = s + parseInt(quantity) * parseFloat(item.price);
-            // setSum(sum + parseInt(item.quantity) * parseInt(item.price));
           });
           setItems(temp_items);
           setSum(s);
@@ -64,6 +68,35 @@ function CartItem({itemID, name, quantity, price, setItems, setSum}) {
       }
     )
   }
+  /* ------------------------ submit-gift-wrap-options ------------------------ */
+  const submitGiftWrapOptions = (e) => {
+    setGiftPack(e.target.checked);
+    items.map(
+      (item) => {
+        if(item._id == itemID){
+          item.isGiftPack = e.target.checked;
+          if(e.target.checked==false){
+            item.instructions="";
+          }
+        }
+      }
+    );
+    console.log(items)
+    setItems(items);
+  }
+  /* ------------------------ submitSpecialInstructions ----------------------- */
+  const submitSpecialInstructions = (e) => {
+    items.map(
+      (item) => {
+        if(item._id == itemID){
+          item.isGiftPack = true
+          item.instructions = instructions;
+        }
+      }
+    );
+    console.log(items)
+    setItems(items);
+  }
   /* ------------------------------- return-jsx ------------------------------- */
   return (
     <div>
@@ -74,9 +107,9 @@ function CartItem({itemID, name, quantity, price, setItems, setSum}) {
           <br></br>
         </div>
         <div className="counter">
-          <div onClick = {incrementCount} className="btn">+</div>
+        <div onClick = {decrementCount} className="btn">-</div>
           <div className="count">{quantity}</div>
-          <div onClick = {decrementCount} className="btn">-</div>
+          <div onClick = {incrementCount} className="btn">+</div>
         </div>
         <div className="prices">
           <div className="amount">
@@ -84,6 +117,16 @@ function CartItem({itemID, name, quantity, price, setItems, setSum}) {
           </div>
         </div>
       </div>
+      <span className="filter-col">
+            <Form.Check size="sm" className="gift-packed" value={isGiftPack} onChange={submitGiftWrapOptions} type="checkbox" label="Giftwrap" />
+        </span>
+        <span>
+        {isGiftPack ?
+        <span><Form.Control size="sm" className="specialInstructions" onChange={(e)=>setInstructions(e.target.value)} value = {instructions} type="text" id="specialInstructions" name="specialInstructions" placeholder="Any special instructions?"/> 
+        <button onClick={submitSpecialInstructions}>submit</button></span>
+         : 
+         <span></span>}
+        </span>
     </div>
   );
 }

@@ -131,7 +131,6 @@ function Home() {
                 sortBy={sortBy} setSortBy={setSortBy} 
                 filterButton={filterButton}/>
       </div>
-      <div>Home</div>
       <div>
         <main>
           <section className="cards">{itemsListCards}</section>

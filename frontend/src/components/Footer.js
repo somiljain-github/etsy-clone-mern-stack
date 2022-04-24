@@ -39,26 +39,6 @@ const Footer = ({ currency, setCurrency, countries, currencies }) => {
       (err)=>{console.log("there was an error in gettng the currencies through the useEffect call during page refresh and the error is", err)}
     );
   }, []);
-  //   const changeUserCurrency = async () => {
-  //     if (currency && currency.id && currency.name) {
-  //       const user = JSON.parse(localStorage.getItem("user"));
-  //       const data = {};
-  //       data.userId = user.id;
-  //       data.currencyId = currency.id;
-  //       try {
-  // const response = await authapi.post(UPDATE_USER_CURRENCY, data);
-  // if (response && response.data && response.data.success) {
-  //   user.currency = currency.id;
-  //   localStorage.setItem("user", JSON.stringify(user));
-  // } else {
-  //   setError("Some unexpected error occurred!");
-  // }
-  //       } catch (e) {
-  //         console.log(e);
-  //         setError("Some unexpected error occurred!");
-  //       }
-  //     }
-  //   };
 
     const changeCurrency = (event) => {
     const data = {currencyID: event.target.value};
@@ -97,7 +77,7 @@ const Footer = ({ currency, setCurrency, countries, currencies }) => {
               <div></div>
             </MDBCol>
             <MDBCol md="4">
-              <span>
+              {/* <span> */}
               <Form.Group className="mb-3">
                 <Form.Label className="currency-drpdwn-label">
                   Currency
@@ -122,11 +102,11 @@ const Footer = ({ currency, setCurrency, countries, currencies }) => {
                     })}
                 </Form.Select>
               </Form.Group>
-              </span>
+              {/* </span> */}
             </MDBCol>
             <MDBCol md="4">
-              <MDBContainer>
-                &copy; {new Date().getFullYear()} Copyright:{" "}
+              <MDBContainer style={{"marginRight": "-124px","paddingTop": "40px"}}>
+                &copy; {new Date().getFullYear()} Copyright:
                 <Link className="link__white" to="/home">Etsy</Link>
               </MDBContainer>
             </MDBCol>

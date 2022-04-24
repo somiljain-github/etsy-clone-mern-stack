@@ -147,7 +147,7 @@ function Item() {
           />
         </div>
         <div className="item-details">
-          <div id="DIV_1">
+          <div id="DIV_1" style={{"margin-top": "10rem"}}>
             <div id="DIV_3"></div> <span id="SPAN_22">12,964 sales</span>
             <span> | </span>
             <span>{item.shopName}</span>

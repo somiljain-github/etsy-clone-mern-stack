@@ -20,7 +20,7 @@ function Cart() {
   useEffect(() => {
     axios.get(URL, {headers: authHeader()})
       .then((response) => {
-        console.log("%%%%%%%%%%%%%%page refreshing");
+        console.log("%%%%%%%%%%%%%%cart page refreshing");
         console.log("the items are...response.data....", response.data);
         if (response.status === 200) {
           let s = 0;
@@ -30,7 +30,6 @@ function Cart() {
             let quantity = cart.filter(x => x === item._id).length;
             item.quantity = quantity;
             s = s + parseInt(quantity) * parseFloat(item.price);
-            // setSum(sum + parseInt(item.quantity) * parseInt(item.price));
           });
           setItems(temp_items);
           setSum(s);
@@ -46,13 +45,28 @@ function Cart() {
 
   const placeOrder = (e) => {
     e.preventDefault();
+    console.log("the items are", items);
+    items.map(item => {
+      item.itemID = item._id;
+      delete item._id;
+      delete item.category;
+      delete item.description;
+      delete item.displayPicture;
+      delete item.name;
+      delete item.price;
+      delete item.salesCount;
+      delete item.userID;
+      delete item.__v;
+    })
+    const data = {userID, items};
+    console.log(data);
     axios
-      .post(`http://${constants.IP.ipAddress}:3001/placeOrder/`, items, {
+      .post(`http://${constants.IP.ipAddress}:3001/api/v1/order/addOrder/`, data, {
         headers: authHeader(),
       })
       .then((response) => {
-        console.log(response.data.orderid);
-        if (response.data.updateItems) {
+        console.log(response.status);
+        if (response.status == 200) {
           const result = alert("Order Placed!!");
           navigate("/home", { replace: true });
         }
@@ -64,8 +78,9 @@ function Cart() {
 
   /* ------------------------------ preparing-jsx ----------------------------- */
   const items_list_cards = items.map((item) => {
-    // console.log(item.name, item.quantity);
-    let props = { itemID: item._id, name: item.name, price: item.price, quantity: item.quantity, setItems: setItems, setSum: setSum};
+    item.isGiftPack = false;
+    item.instructions = "";
+    let props = { itemID: item._id, name: item.name, price: item.price, quantity: item.quantity, items: items, setItems: setItems, setSum: setSum};
     return <CartItem key={item._id} {...props} />;
   });
   /* ------------------------ preparing-jsx-on-refresh ------------------------ */
@@ -83,12 +98,12 @@ function Cart() {
     <div>
       <Navbar />
       <div className="CartContainer">
+      <h3><center>Shopping Cart</center></h3>
         <div className="Header">
-          <h3 className="Heading">Shopping Cart</h3>
+          <h3 className="Heading"></h3>
           <h5 className="Action">Remove all</h5>
         </div>
 
-        {/* <CartHelper items_list={items} /> */}
         <div>
           <section>{items_list_cards}</section>
         </div>
@@ -98,7 +113,7 @@ function Cart() {
             <div>
               <div className="Subtotal">Sub-Total</div>
             </div>
-            <div className="total-amount">${sum}</div>
+            <div className="total-amount">${sum.toFixed(2)}</div>
           </div>
           <button className="button" onClick={placeOrder}>
             Checkout

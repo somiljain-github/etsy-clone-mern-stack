@@ -4,14 +4,6 @@ import { useNavigate } from "react-router-dom";
 import "../styles/filter.css";
 
 function Filter({inStock, setInStock, minPrice, setMinPrice, maxPrice, setMaxPrice, sortBy, setSortBy, filterButton}) {
-  const navigate = useNavigate();
-  const [itemsLoading, setItemsLoading] = useState(false);
-  const [items, setItems] = useState([]);
-  const [errorMsg, setErrorMsg] = useState('');
-
-  const getOtherFilterItems = () => {
-      console.log("here");
-  }
 
   /* -------------------- ensure-maxPrice-is-within-limits -------------------- */
   useEffect(() => {

@@ -1,0 +1,11 @@
+.gift-packed {
+    display: inline-block;
+    margin: 10px;
+}
+
+.specialInstructions {
+    display: inline-block;
+    padding-left: 20px;
+    margin: 10px;
+    width: 30%;
+}

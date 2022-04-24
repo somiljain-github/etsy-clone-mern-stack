@@ -82,7 +82,8 @@ function rootReducer(state = initialState, action) {
     console.log("Updating the user cart in the rootReducer...");
     console.log("the payload is ",action.payload," and the current state is ",state);
     const userObj = state.user;
-    userObj.cart = action.payload;
+    userObj.cart = action.payload.cart;
+    userObj.cartItems = action.payload.cartItems;
     const updated_state = Object.assign({}, state, {user: userObj});
     console.log("the updated state is ", updated_state);
     return updated_state;
