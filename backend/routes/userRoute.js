@@ -64,6 +64,12 @@ router.post(
   UserController.decrementCartItemQuantity
 );
 
+router.post(
+  "/incrementCartItemQuantity/:userID",
+  passport.authenticate("jwt", { session: false }),
+  UserController.incrementCartItemQuantity
+);
+
 router.get(
   "/getCategories/:userID",
   passport.authenticate("jwt", { session: false }),

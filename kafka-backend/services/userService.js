@@ -283,6 +283,50 @@ class UserService {
     }
   }
 
+  static async incrementCartItemQuantity({ userID, itemID }, callback) {
+    try {
+      const filterCondition = { _id: userID };
+      const result = await UserModel.findOne(filterCondition).select("cart");
+      if (result) {
+        let cart = result.cart;
+        cart.push(itemID);
+        const updateCondition = { cart };
+        try {
+          const newResult = await UserModel.findOneAndUpdate( filterCondition, updateCondition,{ new: true }).select("cart");
+          if (newResult) {
+            const itemObj = {};
+            itemObj.cart = newResult.cart;
+            console.log("the final cart is", itemObj.cart);
+            if(newResult.cart.length > 0){
+              let tempCart = [...newResult.cart];
+              tempCart = [...new Set(tempCart)];
+              tempCart.map(itemID => itemID.toString());
+              const records = await ItemModel.find().where('_id').in(tempCart).exec();
+              itemObj.cartItems = records;
+            }
+            callback(null, itemObj);
+          } else {
+            console.log("################################");
+            callback(null, null);
+          }
+        } catch (error) {
+          console.log(err);
+          throw new Error(
+            "Some unexpected error occurred in the inner loop while updating cart in userService.decrementCartItemQuantity"
+          );
+        }
+      } else {
+        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        callback(null, null);
+      }
+    } catch (err) {
+      console.log(err);
+      throw new Error(
+        "Some unexpected error occurred while updating cart in userService.decrementCartItemQuantity"
+      );
+    }
+  }
+
   static async removeCartItems({ userID, itemID }, callback) {
     try {
       const filterCondition = { _id: userID };

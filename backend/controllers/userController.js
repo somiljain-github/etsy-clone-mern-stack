@@ -381,6 +381,48 @@ module.exports = class UserController {
     }
   }
 
+  /* ------------------------ increment-cart-item-count ----------------------- */
+  static async incrementCartItemQuantity(req, resp) {
+    const userParamsObj = { userID: req.params.userID };
+    userParamsObj.itemID = req.body.itemID;
+    const response = {};
+    try {
+      let message = { function: "incrementCartItemQuantity", data: userParamsObj};
+      kafka.make_request("topic-decrement-cart-items", message,
+        (err, result) => {
+          if (err) {
+            console.error(err);
+            resp.json({ status: "Error", msg: "System error, try again"});
+          } else {
+            // if(result && !result.itemFound){
+            //   response.itemFound = result.itemFound;
+            //   response.success = true;
+            //   response.status = "200";
+            // } else 
+            if (result) {
+              response.cart = result.cart;
+              response.success = true;
+              response.status = "200";
+              response.cartItems = result.cartItems;
+              return resp.status(200).send(response);
+            } else {
+              response.success = false;
+              response.status = "404";
+              return resp.status(404).send(response);
+            }
+          }
+        }
+      );
+    } catch (e) {
+      console.log(e);
+      response.success = false;
+      response.error = "Some error occurred. Please try again later";
+      response.status = "500";
+      resp.status(500).send(response);
+    }
+  }
+
+
   static async getCategories(req, resp) {
     const userParamsObj = { userID: req.params.userID };
     const response = { categoriesFound: false };
