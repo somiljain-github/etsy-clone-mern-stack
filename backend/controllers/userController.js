@@ -242,7 +242,7 @@ module.exports = class UserController {
           if (result && result.cartFound) {
             response.cartFound = result.cartFound;
             response.cart = result.cart;
-            response.cartItems = result.cartItems;
+            response.cartItems = result.cartItems
             response.success = true;
             response.status = "200";
             return resp.status(200).send(response);
@@ -353,10 +353,16 @@ module.exports = class UserController {
               msg: "System error, try again",
             });
           } else {
+            // if(result && !result.itemFound){
+            //   response.itemFound = result.itemFound;
+            //   response.success = true;
+            //   response.status = "200";
+            // } else 
             if (result) {
               response.cart = result.cart;
               response.success = true;
               response.status = "200";
+              response.cartItems = result.cartItems;
               return resp.status(200).send(response);
             } else {
               response.success = false;

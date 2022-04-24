@@ -5,11 +5,13 @@ import axios from "axios";
 import authHeader from "../services/authHeader";
 import { constants } from "../config/config";
 import "../styles/item.css";
+import { useSelector } from "react-redux";
 
 function Item() {
   const navigate = useNavigate();
   const [item, setItem] = useState({});
   const [quantity, setQuantity] = useState(1);
+  const currency = useSelector(state => state.user.currency);
   let { itemID } = useParams();
   console.log("item id in itemjs = " + itemID);
   useEffect(() => {

@@ -125,7 +125,7 @@ module.exports = class itemController {
           (err, items) => {
             if (err) {
               console.error(err);
-              resp.json({
+              res.json({
                 status: "Error",
                 msg: "System error, try again",
               });

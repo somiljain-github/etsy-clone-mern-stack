@@ -235,7 +235,12 @@ class UserService {
         if (idx != -1) {
           cart.splice(idx, 1);
         } else {
-          callback(null, null);
+          // console.log("****************************");
+          // let returnObj = {
+          //   itemFound: false
+          // }
+          // callback(null, returnObj);
+          callback(null ,null);
         }
         const updateCondition = { cart };
         try {
@@ -245,9 +250,19 @@ class UserService {
             { new: true }
           ).select("cart");
           if (result) {
-            console.log("the final cart is", result.cart);
-            callback(null, result);
+            const itemObj = {};
+            itemObj.cart = result.cart;
+            console.log("the final cart is", itemObj.cart);
+            if(result.cart.length > 0){
+              let tempCart = [...result.cart];
+              tempCart = [...new Set(tempCart)];
+              tempCart.map(itemID => itemID.toString());
+              const records = await ItemModel.find().where('_id').in(tempCart).exec();
+              itemObj.cartItems = records;
+            }
+            callback(null, itemObj);
           } else {
+            console.log("################################");
             callback(null, null);
           }
         } catch (error) {
@@ -257,6 +272,7 @@ class UserService {
           );
         }
       } else {
+        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!");
         callback(null, null);
       }
     } catch (err) {

@@ -3,40 +3,40 @@ import "../styles/cart.css";
 import { constants } from "../config/config";
 import axios from "axios";
 import authHeader from "../services/authHeader";
-import CartItem from "./CartItem";
-import CartHelper from "./CartHelper";
-import NavBar from "./NavBar";
+import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
+import CartItem from "./CartItem";
+import { useSelector } from "react-redux";
 
 function Cart() {
   const [items, setItems] = useState([]);
   const [sum, setSum] = useState(0);
-  const userId = localStorage.getItem("userid");
+  const userID = localStorage.getItem("userID");
   const navigate = useNavigate();
+  const cart = useSelector(state => state.user.cart);
 
-  const api = `http://${constants.IP.ipAddress}:3001/cart/${userId}`;
-  console.log(api);
-  //   let sum = 0;
+  const URL = `http://${constants.IP.ipAddress}:3001/api/v1/user/cart/${userID}`;
+  console.log(URL);
   useEffect(() => {
-    axios
-      .get(api, {
-        headers: authHeader(),
-      })
+    axios.get(URL, {headers: authHeader()})
       .then((response) => {
-        console.log("the items are...response.data....", response.data.items);
+        console.log("%%%%%%%%%%%%%%page refreshing");
+        console.log("the items are...response.data....", response.data);
         if (response.status === 200) {
           let s = 0;
-          const temp_items = response.data.items;
-          setItems(temp_items);
+          const temp_items = response.data.cartItems;
+          const cart = response.data.cart;
           temp_items.map((item) => {
-            console.log("jnfksd");
-            s = s + parseInt(item.quantity) * parseInt(item.price);
+            let quantity = cart.filter(x => x === item._id).length;
+            item.quantity = quantity;
+            s = s + parseInt(quantity) * parseFloat(item.price);
             // setSum(sum + parseInt(item.quantity) * parseInt(item.price));
           });
+          setItems(temp_items);
           setSum(s);
         } else if (response.data.code === 500) {
           console.log(response.data.message);
-          console.log("errrrrirrrrr");
+          console.log("errrrrorrrrr");
         }
       })
       .catch((err) => {
@@ -46,17 +46,6 @@ function Cart() {
 
   const placeOrder = (e) => {
     e.preventDefault();
-    // const data = {
-    //   itemName: name,
-    //   photo : path,
-    //   category: category,
-    //   description : description,
-    //   price : price,
-    //   quantity : quantity,
-    //   salesCount : 0,
-    //   shopName : 'test',
-    //   shopid : localStorage.getItem('shopid')
-    // };
     axios
       .post(`http://${constants.IP.ipAddress}:3001/placeOrder/`, items, {
         headers: authHeader(),
@@ -73,22 +62,41 @@ function Cart() {
       });
   };
 
+  /* ------------------------------ preparing-jsx ----------------------------- */
+  const items_list_cards = items.map((item) => {
+    // console.log(item.name, item.quantity);
+    let props = { itemID: item._id, name: item.name, price: item.price, quantity: item.quantity, setItems: setItems, setSum: setSum};
+    return <CartItem key={item._id} {...props} />;
+  });
+  /* ------------------------ preparing-jsx-on-refresh ------------------------ */
+  // useEffect(
+  //   () =>{
+  //     items_list_cards = items.map((item) => {
+  //       // console.log(item.name, item.quantity);
+  //       let props = { itemID: item._id, name: item.name, price: item.price, quantity: item.quantity, setItems: setItems, setSum: setSum};
+  //       return <CartItem key={item._id} {...props} />;
+  //     });
+  //   }, [items]
+  // );
+
   return (
     <div>
-      <NavBar />
+      <Navbar />
       <div className="CartContainer">
         <div className="Header">
           <h3 className="Heading">Shopping Cart</h3>
           <h5 className="Action">Remove all</h5>
         </div>
 
-        <CartHelper items_list={items} />
+        {/* <CartHelper items_list={items} /> */}
+        <div>
+          <section>{items_list_cards}</section>
+        </div>
         <hr />
         <div className="checkout">
           <div className="total">
             <div>
               <div className="Subtotal">Sub-Total</div>
-              {/* <div className="items">2 items</div> */}
             </div>
             <div className="total-amount">${sum}</div>
           </div>
