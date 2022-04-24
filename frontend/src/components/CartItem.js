@@ -8,8 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 function CartItem({itemID, name, quantity, price, setItems, setSum}) {
   const userID = localStorage.getItem("userID");
   const dispatch = useDispatch();
-  const cart = useSelector(state => state.user.cart);
-  // const userID = undefined;
+  // const cart = useSelector(state => state.user.cart);
   /* -------------------------- increment-item-count -------------------------- */
   const incrementCount = () => {
     console.log("about to increment count for", itemID);
@@ -22,7 +21,8 @@ function CartItem({itemID, name, quantity, price, setItems, setSum}) {
     .then(
       (response) => {
         console.log(response.data);
-        if(response.data == 200){
+        if(response.status == 200){
+          console.log("in the 200 loop");
           let s = 0;
           const temp_items = response.data.cartItems;
           const cart = response.data.cart;
@@ -34,7 +34,7 @@ function CartItem({itemID, name, quantity, price, setItems, setSum}) {
             // setSum(sum + parseInt(item.quantity) * parseInt(item.price));
           });
           setItems(temp_items);
-          // setSum(s);
+          setSum(s);
         }
       }
     )
