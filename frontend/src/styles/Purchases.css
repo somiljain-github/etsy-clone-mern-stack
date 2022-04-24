@@ -1,0 +1,40 @@
+.purchase-card {
+    border: 1px solid grey;
+    margin: 20px;
+    border-radius: 10px;
+    text-align: left;
+    padding: 10px;
+}
+
+.purchase-card:hover {
+    background-color: #DEDEDE;
+}
+
+.item_id_top_right {
+    float: right;
+    font-style: italic;
+    font-size: 0.75em;
+}
+
+.item-card {
+    border: 1px solid grey;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    padding-top: 10px;
+}
+
+.item-head {
+    font-size: 1.25em;
+    /* font-weight: bold; */
+}
+
+.item-left-box {
+    border: 1px solid grey;
+    /* text-overflow: ellipsis; */
+    /* overflow-x: scroll; */
+}
+
+.item-inner-box {
+    margin: 0px 10px;
+}
