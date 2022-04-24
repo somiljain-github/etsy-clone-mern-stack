@@ -1,5 +1,5 @@
 exports.constants = {
   IP: {
-    ipAddress: "localhost",
+    ipAddress: "54.164.42.70",
   },
 };

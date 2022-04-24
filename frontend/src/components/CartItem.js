@@ -5,7 +5,8 @@ import authHeader from "../services/authHeader";
 import { updateCart } from "../redux/actions";
 import { useDispatch } from "react-redux";
 import { Form } from 'react-bootstrap';
-import "../styles/cartItem.css"
+import "../styles/cartItem.css";
+import { constants } from "../config/config";
 
 function CartItem({itemID, name, quantity, price, items, setItems, setSum}) {
   const userID = localStorage.getItem("userID");
@@ -16,7 +17,7 @@ function CartItem({itemID, name, quantity, price, items, setItems, setSum}) {
   const incrementCount = () => {
     console.log("about to increment count for", itemID);
     const data = { itemID };
-    axios.post(`http://localhost:3001/api/v1/user/incrementCartItemQuantity/${userID}`, data, {headers: authHeader()})
+    axios.post(`http://${constants.IP.ipAddress}:3001/api/v1/user/incrementCartItemQuantity/${userID}`, data, {headers: authHeader()})
     .then(
       (response) => {
         if(response.status == 200){
@@ -42,7 +43,7 @@ function CartItem({itemID, name, quantity, price, items, setItems, setSum}) {
   const decrementCount = () => {
     const data = { itemID };
     console.log("about to decrement count for", itemID);
-    axios.post(`http://localhost:3001/api/v1/user/decrementCartItemQuantity/${userID}`, data, {headers: authHeader()})
+    axios.post(`http://${constants.IP.ipAddress}:3001/api/v1/user/decrementCartItemQuantity/${userID}`, data, {headers: authHeader()})
     .then(
       (response) => {
         console.log(response.data);
