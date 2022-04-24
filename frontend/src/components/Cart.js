@@ -55,6 +55,8 @@ function Cart() {
     items.map(item => {
       item.dop = today;
       item.itemID = item._id;
+      let final_price = parseInt(item.quantity) * parseFloat(item.price);
+      item.price = final_price;
       delete item._id;
       delete item.category;
       delete item.description;
