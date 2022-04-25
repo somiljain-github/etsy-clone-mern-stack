@@ -147,7 +147,8 @@ function Purchases() {
                                                 <div className="col-md-4 item-right-box">
                                                     {/* image container */}
                                                     {/* <p>test</p> */}
-                                                    <img src="simple-necklace-designs-in-gold-10.jpg" className="item-image" />
+                                                    {/* <img src="simple-necklace-designs-in-gold-10.jpg" className="item-image" /> */}
+                                                    <img src={item.displayPicture} className="item-image" />
                                                 </div>
                                             </div>
                                         </div>

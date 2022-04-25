@@ -90,7 +90,7 @@ const Footer = ({ currency, setCurrency, countries, currencies }) => {
                   //   value={currency && currency.id}
                     onChange={changeCurrency}
                 >
-                  <option value="USD">Select Currency</option>
+                  <option value="USD">USD</option>
                   {currencies_list &&
                     currencies_list.length &&
                     currencies_list.map((eachCurrency, index) => {
