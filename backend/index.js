@@ -185,41 +185,4 @@ app.post("/api/v1/login", async function(req, res) {
         console.log("error in login:- \n", err);
       });
 
-    // await connection.query(
-    //   `select * from user_profile_table where UPPER(email) = '${req.body.email.toUpperCase()}'`,
-    //   (err, result) => {
-    //     if (err) {
-    //       res.writeHead(500, {
-    //         "Content-Type": "text/plain",
-    //       });
-    //       res.send("Database Error");
-    //     } else {
-    //       if (
-    //         result[0] &&
-    //         passwordHash.verify(req.body.password, result[0]["password"])
-    //       ) {
-    //         res.writeHead(200, {
-    //           "Content-Type": "text/plain",
-    //         });
-    //         const userObj = {
-    //           id: result[0]["rec_id"],
-    //           email: result[0]["email"],
-    //           name: result[0]["name"],
-    //           profilePicture: result[0]["profile_picture_url"],
-    //           phone: result[0]["phone"],
-    //           currency: result[0]["currency"],
-    //           timezone: result[0]["timezone"],
-    //           language: result[0]["language"],
-    //         };
-    //         res.end(JSON.stringify(userObj));
-    //       } else {
-    //         res.writeHead(200, {
-    //           "Content-Type": "text/plain",
-    //         });
-    //         res.end("Unsuccessful Login");
-    //       }
-    //     }
-    //   }
-    // );
-  }
-});
+    
