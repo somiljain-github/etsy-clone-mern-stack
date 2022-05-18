@@ -14,8 +14,8 @@ function Favourites() {
   ]);
   const [itemsListCards, setItemListCards] = useState("");
   const [items, setItems] = useState("");
-  let allItems = useSelector(state => state.items);
-  const navigate = useNavigate();;
+  let allItems = useSelector((state) => state.items);
+  const navigate = useNavigate();
   /* ------------------------ verify-user-is-logged-in ------------------------ */
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -27,35 +27,45 @@ function Favourites() {
   useEffect(() => {
     console.log("gere");
     const userID = localStorage.getItem("userID");
-    axios.get(`http://${constants.IP.ipAddress}:3001/api/v1/user/getFav/${userID}`, {headers: authHeader(),})
-    .then((response) => {
-      // console.log("here", response.status);
-      if(response.status == 200){
-        // console.log(response.data.favouriteItems);
-        setItems(response.data.favouriteItems);
-      }
-    }).catch(
-      (error) => {
-        console.log("faced an error while getting favourites and the error is", error);
-      }
-    );
-
+    axios
+      .get(
+        `http://${constants.IP.ipAddress}:3001/api/v1/user/getFav/${userID}`,
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        // console.log("here", response.status);
+        if (response.status == 200) {
+          // console.log(response.data.favouriteItems);
+          setItems(response.data.favouriteItems);
+        }
+      })
+      .catch((error) => {
+        console.log(
+          "faced an error while getting favourites and the error is",
+          error
+        );
+      });
   }, []);
   /* -------------------------- convert-items-to-jsx -------------------------- */
-  useEffect(
-    () => {
-      if(items === undefined){
-        return;
-      }
-      // console.log(items);
-      setItemListCards(items.map((item) => {
+  useEffect(() => {
+    if (items === undefined) {
+      return;
+    }
+    // console.log(items);
+    setItemListCards(
+      items.map((item) => {
         console.log(item);
-        let props = { name: item.name, price: item.price, displayPicture: item.displayPicture, itemID: item._id,};
+        let props = {
+          name: item.name,
+          price: item.price,
+          displayPicture: item.displayPicture,
+          itemID: item._id,
+        };
         console.log(props);
-        return <HomeCardSingle key={props.itemID} {...props} />; 
-      }) );
-    }, [items]
-  );
+        return <HomeCardSingle key={props.itemID} {...props} />;
+      })
+    );
+  }, [items]);
   return (
     <div>
       <Navbar />
@@ -65,7 +75,7 @@ function Favourites() {
         </main>
       </div>
     </div>
-  )
+  );
 }
 
-export default Favourites
+export default Favourites;
