@@ -8,8 +8,8 @@ const jwt = require("jsonwebtoken");
 require("./config/passport-config");
 //================================importing routes================================
 const testAPI = require("./routes/test_route");
-const registerRoute = require("./routes/registerRoute");
-const loginRoute = require("./routes/loginRoute");
+// const registerRoute = require("./routes/registerRoute");
+// const loginRoute = require("./routes/loginRoute");
 const userRoute = require("./routes/userRoute");
 const shopRoute = require("./routes/shopRoute");
 const constantsRoute = require("./routes/constantsRoute");
