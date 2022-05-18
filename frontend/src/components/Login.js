@@ -58,7 +58,7 @@ function Login({ user }) {
         }
       })
       .catch((err) => {
-        if (err.response.status === 400) {
+        if (err.response.status == 400) {
           setMessage(err.response.data.message);
         }
       });

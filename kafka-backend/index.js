@@ -1,4 +1,4 @@
-var connection = new require("./kafka/Connection");
+var connection = new require("./kafka/connection");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const RegisterService = require("./services/registerService");

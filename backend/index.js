@@ -15,6 +15,8 @@ const shopRoute = require("./routes/shopRoute");
 const constantsRoute = require("./routes/constantsRoute");
 const itemRoute = require("./routes/itemRoute");
 const orderRoute = require("./routes/orderRoute");
+/* --------------------------------- models --------------------------------- */
+const UserModel = require("./models/userModel");
 //================================start of config================================
 dotenv.config();
 
@@ -89,9 +91,135 @@ mongoose.connection.on("disconnected", () => {
 app.use("/api/v1/", testAPI);
 //================================actual apis================================
 app.use("/api/v1/register", registerRoute);
-app.use("/api/v1/login", loginRoute);
+// app.use("/api/v1/login", loginRoute);
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/shop", shopRoute);
 app.use("/api/v1/constants", constantsRoute);
 app.use("/api/v1/item", itemRoute);
 app.use("/api/v1/order", orderRoute);
+
+//================================GraphQL apis================================
+app.post("/api/v1/register", async function(req, res) {
+  if (req.body.name && req.body.emailID && req.body.password) {
+    var sql = `INSERT INTO user_profile_table (email, name, password) VALUES ('${req.body.email.toUpperCase()}', '${
+      req.body.name
+    }', '${passwordHash.generate(req.body.password)}');`;
+    await connection.query(sql, async function(error, results) {
+      if (error) {
+        res.writeHead(200, {
+          "Content-Type": "text/plain",
+        });
+        res.end(error.code);
+      } else {
+        await connection.query(
+          `SELECT * from user_profile_table where UPPER(email)='${req.body.email.toUpperCase()}'`,
+          function(error, result) {
+            if (error) {
+              res.writeHead(500, {
+                "Content-Type": "text/plain",
+              });
+              res.send("Database Error");
+            } else {
+              const userObj = {
+                id: result[0]["rec_id"],
+                email: result[0]["email"],
+                name: result[0]["name"],
+                profilePicture: result[0]["profile_picture_url"],
+                phone: result[0]["phone"],
+                currency: result[0]["currency"],
+                timezone: result[0]["timezone"],
+                language: result[0]["language"],
+              };
+              res.end(JSON.stringify(userObj));
+            }
+          }
+        );
+      }
+    });
+  }
+});
+
+app.post("/api/v1/login", async function(req, res) {
+  if (req.body.emailID && req.body.password) {
+    const query = {
+      emailID: req.body.emailID,
+      // password: req.body.password,
+    };
+    console.log(query);
+    UserModel.findOne(query)
+      .then((result) => {
+        const returnMessage = {};
+        console.log("------------", result);
+        if (result == null) {
+          res.json({
+            status: "Error",
+            msg: "System error, try again",
+          });
+        } else {
+          const passwordMatch = true;
+          // await encrypt.comparePassword(
+          //   data.password,
+          //   result.password
+          // );
+
+          if (passwordMatch) {
+            const user = JSON.parse(JSON.stringify(result));
+            delete user.password;
+            const token = jwt.sign(user, process.env.SECRET_KEY, {
+              expiresIn: "24h",
+            });
+            returnMessage.user = user;
+            returnMessage.token = token;
+            returnMessage.success = true;
+            returnMessage.status = 201;
+            return res.status(201).send(returnMessage);
+          } else {
+            returnMessage.success = false;
+            returnMessage.status = "400";
+            returnMessage.message = "Invalid credentials";
+            return res.status(400).send(returnMessage);
+          }
+        }
+      })
+      .catch((err) => {
+        console.log("error in login:- \n", err);
+      });
+
+    // await connection.query(
+    //   `select * from user_profile_table where UPPER(email) = '${req.body.email.toUpperCase()}'`,
+    //   (err, result) => {
+    //     if (err) {
+    //       res.writeHead(500, {
+    //         "Content-Type": "text/plain",
+    //       });
+    //       res.send("Database Error");
+    //     } else {
+    //       if (
+    //         result[0] &&
+    //         passwordHash.verify(req.body.password, result[0]["password"])
+    //       ) {
+    //         res.writeHead(200, {
+    //           "Content-Type": "text/plain",
+    //         });
+    //         const userObj = {
+    //           id: result[0]["rec_id"],
+    //           email: result[0]["email"],
+    //           name: result[0]["name"],
+    //           profilePicture: result[0]["profile_picture_url"],
+    //           phone: result[0]["phone"],
+    //           currency: result[0]["currency"],
+    //           timezone: result[0]["timezone"],
+    //           language: result[0]["language"],
+    //         };
+    //         res.end(JSON.stringify(userObj));
+    //       } else {
+    //         res.writeHead(200, {
+    //           "Content-Type": "text/plain",
+    //         });
+    //         res.end("Unsuccessful Login");
+    //       }
+    //     }
+    //   }
+    // );
+  }
+});

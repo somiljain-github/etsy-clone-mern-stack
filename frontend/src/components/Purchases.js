@@ -124,7 +124,7 @@ function Purchases() {
                 <PaginatedList
                     list={purchases}
                     itemsPerPage={pageSize}
-                    renderList={(list) => (list.map(purchase =>(<>{
+                    renderList={(purchases) => (purchases.map(purchase =>(<>{
                         <div className="purchase-card" key={JSON.stringify(purchase)}>
                             <p> <span className="item_id_top_right"><b>Purchase Id:</b> {purchase._id}</span></p>
                             <br/>
